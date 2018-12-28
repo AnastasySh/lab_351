@@ -50,8 +50,8 @@
 Единсвтенное отличие - поля по умолчанию public
 struct
 */
-#include "stdafx.h"
-//#include "pch.h"
+
+#include "pch.h"
 #include <iostream>
 #include <string>
 
@@ -68,8 +68,7 @@ public:
 	{
 
 	};
-	//void add_passenger(int passsengers);
-	//void accelerate(double delta_velocity);
+
 };
 void array_equalization(char * first_array, char * second_array) {
 	int lenght = strlen(first_array);
@@ -150,8 +149,6 @@ public:
 		return true;
 	};
 	void print_user_data() {
-		//print_array_chr(first_name);
-		//print_array_chr(second_name);
 		print_array_chr(str_passport);
 		print_array_chr(str_birthdate);
 
@@ -162,18 +159,18 @@ user_data::user_data() {
 user_data::~user_data() {
 }; // деструктор
 user_data::user_data(char * p_first_name, char * p_second_name, char * p_str_passport, char * p_str_birthdate) {
-	//first_name = p_first_name;
+
 	if (set_firstname(p_first_name)) {
-		std::cout << "Firstname Okey.\n";
+		std::cout << "Firstname Ok.\n";
 	}
 	if (set_secondname(p_second_name)) {
-		std::cout << "Secondname Okey.\n";
+		std::cout << "Secondname Ok.\n";
 	}
 	if (set_passport(p_str_passport)) {
-		std::cout << "Passport Okey.\n";
+		std::cout << "Passport Ok.\n";
 	}
 	if (set_birthdate(p_str_birthdate)) {
-		std::cout << "Birthdate Okey.\n";
+		std::cout << "Birthdate Ok.\n";
 	}
 };
 user_data::user_data(char * p_first_name, char * p_second_name) {
@@ -185,12 +182,12 @@ user_data::user_data(char * p_first_name, char * p_second_name) {
 int main()
 {
 	user_data birthdate;
-	char birthdate_array[11] = "25.09.2000";
-	char firstname_array[255] = "Ivanov";
-	char secondname_array[255] = "Ivan";
+	char birthdate_array[11] = "11.11.1998";
+	char firstname_array[255] = "dan";
+	char secondname_array[255] = "korobov";
 	char passport_array[11] = "1234567890";
 	if (birthdate.set_firstname(firstname_array)) {
-		std::cout << "All is fine.";
+		std::cout << "ok";
 	}
 	else {
 		std::cout << "Error";
@@ -198,8 +195,5 @@ int main()
 	user_data user1;
 	user_data user2(firstname_array, secondname_array, passport_array, birthdate_array);
 	user_data user3(firstname_array, secondname_array);
-	/*int *arr;
-	int num;
-	std::cin >> num;
-	arr = (int*) malloc(num * sizeof(int));*/
+
 }
