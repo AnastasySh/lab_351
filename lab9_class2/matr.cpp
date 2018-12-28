@@ -19,15 +19,17 @@ matrix::~matrix()
 {
 };
 void matrix::input()
-{
+{setlocale(LC_ALL, "Russian");
+int strok1, stolb1;
 	cout << "введите количество строк" << endl;
-	cin >> strok;
+	cin >> strok1;
 	cout << "введите количество стoлбцов" << endl;
-	cin >> stolb;
-
-	for (int i = 0; i < strok; i++)
+	cin >> stolb1;
+	strok=strok1;
+	stolb = stolb1;
+	for (int i = 0; i < strok1; i++)
 	{
-		for (int j = 0; j < stolb; j++)
+		for (int j = 0; j < stolb1; j++)
 		{
 			cout << "введите"<<i<<" "<<j<<" элемент"<< endl;
 			cin >> matr[i][j];
@@ -37,10 +39,10 @@ void matrix::input()
 };
 void matrix::print()
 {
-	
-	for (int i = 0; i < strok; i++)
+	cout << "текущая матрица" << endl;
+	for (int i = 0; i <strok; i++)
 	{
-		for (int j = 0; j < stolb; j++)
+		for (int j = 0; j <stolb; j++)
 		{
 			cout << matr[i][j]<<" ";
 
@@ -48,17 +50,27 @@ void matrix::print()
 		cout << endl;
 	}
 };
-int matrix::getstrok(matrix matr1)
+int matrix::getstrok()
 {
 	return strok;
 };
-int matrix::getstolb(matrix matr1)
+int matrix::getstolb()
 {
 	return stolb;
 };
-void matrix::summmatr(matrix matr1, matrix matr2)
+int matrix::getelement(int i, int j)
 {
-	if (matr1.strok != matr2.strok || matr1.stolb != matr2.stolb)
+	if (0 <= i < strok & 0 <= j < stolb)
+	{
+		return matr[i][j];
+	}
+	else
+		cout << "error!";
+};
+matrix matrix::summmatr(matrix matr2)
+{
+	matrix newmatr;
+	if (strok != matr2.strok || stolb != matr2.stolb)
 	{
 		cout << "error!" << endl;
 	}
@@ -68,14 +80,17 @@ void matrix::summmatr(matrix matr1, matrix matr2)
 		{
 			for (int j = 0; j < stolb; j++)
 			{
-				matr1[i][j] += matr2[i][j];
+			 matr[i][j] += matr2.matr[i][j];
 			};
 		};
 	};
+	return newmatr;
 };
-void matrix::multmatr(matrix matr1, matrix matr2)
+matrix matrix::multmatr(matrix matr2)
 {
-	if (matr1.strok == matr2.stolb || matr2.strok == matr1.stolb)
+	matrix newmatr;
+	int a = 0;
+	if (strok == matr2.stolb || matr2.strok == stolb)
 	{
 		for (int i = 0; i < strok; i++)
 		{
@@ -83,32 +98,27 @@ void matrix::multmatr(matrix matr1, matrix matr2)
 			{
 				for (int k = 0; k < strok; k++)
 				{
-					matr1[i][k] * matr2[k][j];
+				a = matr[i][k] * matr2.matr[k][j];
 				};
+				newmatr.matr[i][j] = a;
 			};
 		};
 	};
+	return newmatr;
 };
-void matrix::transp(matrix matr1)
+matrix matrix::transp()
 {
-	int a = matrix::getstrok(matr1);
-	int b = matrix::getstolb(matr1);
-	int matrtime[10][10] = { 0 };
-	for (int i = 0; i < 10; i++)
+	matrix newmatr;
+	int a = matrix::getstrok();
+	int b = matrix::getstolb();
+	
+	for (int i = 0; i < a; i++)
 	{
-		for (int j = 0; j < 10; j++)
+		for (int j = 0; j < b; j++)
 		{
-			matrtime[j][i] = matr1[i][j];
+			newmatr.matr[j][i] =matr[i][j];
 		};
 	};
-	for (int i = 0; i < 10; i++)
-	{
-		for (int j = 0; j < 10; j++)
-		{
-			matr[i][j] = matrtime[i][j];
-
-		}
-	}
-
+	return newmatr;
 };
 

@@ -2,27 +2,14 @@
 class matrix
 {
 public:
-	int getstrok(matrix matr1)
-	{
-	};
-	int getstolb(matrix matr1)
-	{
-	};
-	void input()
-	{
-	};
-	void transp(matrix matr1)
-	{
-	};
-	void summmatr(matrix matr1, matrix matr2)
-	{
-	};
-	void multmatr(matrix matr1, matrix matr2)
-	{
-	};
-	void print()
-	{
-	};
+	int getstrok();
+	int getstolb();
+	void input();
+	matrix transp();
+	matrix summmatr(matrix matr2);
+	matrix multmatr(matrix matr2);
+	int getelement(int i, int j);
+	void print();
 	matrix();
 	~matrix();
 
