@@ -12,7 +12,9 @@ public:
 	void print();
 	matrix();
 	~matrix();
-	friend matrix operator+(matrix& matrA, matrix& matrB);
+	friend matrix operator+(matrix& matr1, matrix& matr2);
+	friend matrix operator-(matrix& matr1, matrix& matr2);
+	friend matrix operator*(matrix& matr1, matrix& matr2);
 private:
 	int ** matr;
 	int stolb;

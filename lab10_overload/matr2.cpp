@@ -1,6 +1,7 @@
 #include "pch.h"
 #include <iostream>
-#include "matr.h"
+#include "matr2.h"
+
 using std::cin;
 using std::cout;
 using std::endl;
@@ -11,7 +12,7 @@ matrix::~matrix()
 {
 };
 void matrix::input()
-{setlocale(LC_ALL, "Russian");
+{	setlocale(LC_ALL, "Russian");
 	int strok1, stolb1;
 	cout << "введите количество строк" << endl;
 	cin >> strok1;
@@ -22,14 +23,14 @@ void matrix::input()
 	matr = new int *[strok];
 	for (int i = 0; i < strok; i++)
 	{
-		matr[i] = new int [stolb];
+		matr[i] = new int[stolb];
 		for (int j = 0; j < stolb; j++)
 		{
 			cout << "введите" << i << " " << j << " элемент" << endl;
 			cin >> matr[i][j];
 		}
 	}
-	
+
 };
 void matrix::print()
 {
@@ -38,7 +39,7 @@ void matrix::print()
 	{
 		for (int j = 0; j < stolb; j++)
 		{
-			cout << getelement(i,j) << " ";
+			cout << getelement(i, j) << " ";
 
 		}
 		cout << endl;
@@ -112,7 +113,7 @@ void matrix::transp()
 	{
 		for (int j = 0; j < b; j++)
 		{
-			if (i > j) 
+			if (i > j)
 			{
 				m = matr[i][j];
 				matr[i][j] = matr[j][i];
@@ -120,4 +121,61 @@ void matrix::transp()
 			}
 		};
 	};
+};
+matrix operator+(matrix& matr1, matrix& matr2)
+{
+
+	if (matr1.strok != matr2.strok || matr1.stolb != matr2.stolb)
+	{
+		cout << "error!" << endl;
+	}
+	else
+	{
+		for (int i = 0; i < matr1.strok; i++)
+		{
+			for (int j = 0; j < matr1.stolb; j++)
+			{
+				matr1.matr[i][j] += matr2.matr[i][j];
+			};
+		};
+	};
+	return matr1;
+};
+
+matrix operator-(matrix& matr1, matrix& matr2)
+{
+	if (matr1.strok != matr2.strok || matr1.stolb != matr2.stolb)
+	{
+		cout << "error!" << endl;
+	}
+	else
+	{
+		for (int i = 0; i < matr1.strok; i++)
+		{
+			for (int j = 0; j < matr1.stolb; j++)
+			{
+				matr1.matr[i][j]-= matr2.matr[i][j];
+			};
+		};
+	};
+	return matr1;
+}
+matrix operator*(matrix& matr1, matrix& matr2)
+{
+	int a = 0;
+	if (matr1.strok == matr2.stolb || matr2.strok == matr1.stolb)
+	{
+		for (int i = 0; i < matr1.strok; i++)
+		{
+			for (int j = 0; j < matr1.stolb; j++)
+			{
+				for (int k = 0; k < matr1.strok; k++)
+				{
+					a = matr1.matr[i][k] * matr2.matr[k][j];
+				};
+				matr1.matr[i][j] = a;
+			};
+		};
+	};
+	return matr1;
 };

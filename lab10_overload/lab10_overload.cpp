@@ -28,9 +28,19 @@ for (int i = 0; i < rows; i++) {
 
 #include "pch.h"
 #include <iostream>
+#include "matr2.h"
+using std::cin;
+using std::cout;
 
 int main()
 {
-    std::cout << "Hello World!\n"; 
+	matrix A1, A2;
+	A1.input();
+	A2.input();
+	A1 = A1 + A2;
+	A1 = A1 - A2;
+	A1 = A1 * A2;
+	A1.print();
+
 }
 

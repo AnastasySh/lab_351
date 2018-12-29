@@ -46,17 +46,18 @@ using std::cout;
 
 int main()
 {
-	setlocale(LC_ALL, "Russian");
-	matrix A1; /*A2;*/
+
+setlocale(LC_ALL, "Russian");
+	matrix A1, A2, newmatr;
 	A1.input();
 	A1.print();
-	/*A2.input();
+	A2.input();
 	A1.summmatr(A2);
 	A1.print();
 	A1.multmatr(A2);
 	A1.print();
 	A1.transp();
-	A1.print();*/
+	A1.print();
 
 
 };

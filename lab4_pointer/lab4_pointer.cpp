@@ -89,7 +89,7 @@ if ( *p == value)
 */
 #include "pch.h"
 //
-#include "stdafx.h"
+//#include "stdafx.h"
 #include <iostream>
 using std::cout;
 using std::endl;
