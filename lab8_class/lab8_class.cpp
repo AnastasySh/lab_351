@@ -161,16 +161,16 @@ user_data::~user_data() {
 user_data::user_data(char * p_first_name, char * p_second_name, char * p_str_passport, char * p_str_birthdate) {
 
 	if (set_firstname(p_first_name)) {
-		std::cout << "Firstname Ok.\n";
+		std::cout << "оk.\n";
 	}
 	if (set_secondname(p_second_name)) {
-		std::cout << "Secondname Ok.\n";
+		std::cout << "оk.\n";
 	}
 	if (set_passport(p_str_passport)) {
-		std::cout << "Passport Ok.\n";
+		std::cout << "оk.\n";
 	}
 	if (set_birthdate(p_str_birthdate)) {
-		std::cout << "Birthdate Ok.\n";
+		std::cout << "оk.\n";
 	}
 };
 user_data::user_data(char * p_first_name, char * p_second_name) {

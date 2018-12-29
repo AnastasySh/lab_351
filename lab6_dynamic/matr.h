@@ -14,8 +14,8 @@ public:
 	~matrix();
 
 private:
-	int matr[10][10];
+	int ** matr = new int *[strok];
 	int stolb;
 	int strok;
-	
+
 };
