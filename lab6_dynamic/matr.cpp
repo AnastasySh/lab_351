@@ -26,7 +26,7 @@ void matrix::input()
 		for (int j = 0; j < stolb; j++)
 		{
 			cout << "введите" << i << " " << j << " элемент" << endl;
-			cin >> matr[i][j];
+			cin >> matr[i][j];//cin >> matr[i*M + j];
 		}
 	}
 	

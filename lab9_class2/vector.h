@@ -3,6 +3,7 @@
 class vector : matrix
 {
 private:
+	// только векторное произведение все остальное лишнее. 
 	int size;
 	double vec[10];
 public:
