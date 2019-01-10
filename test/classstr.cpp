@@ -13,12 +13,16 @@ str::str()//СДЕЛАНО.РАБОТАЕТ. нулевой конструктор
 	std::string s1;
 	getline(std::cin, s1);
 	strok = new char[s1.length()+1];
-	const char *copyC;
-	copyC = s1.c_str(); 
-	strcpy(strok, copyC); 
 	size = strlen(strok);
+	/*const char *copyC;
+	copyC = s1.c_str(); 
+	strcpy(strok, copyC); */
+	for (int i = 0; i < size; i++)
+	{
+		strok[i] = s1[i];
+	};
 };
-str::~str() // вроде сделан нулевой деструктор
+/*str::~str() // вроде сделан нулевой деструктор
 {
 	delete[]strok;
 };
@@ -33,7 +37,7 @@ str::str(char* a) //СДЕЛАНО. РАБОТАЕТ. ЕСТЬ ВОПРОСЫ. конструктор копирующий из м
 	for (int i=0; i < q; i++)
 	{
 		strok[i] = a[i];
-	};*/
+	};
 	size = strlen(strok);
 };
 str::str(const str &s1) //СДЕЛАНО. РАБОТАЕТ. ЕСТЬ ВОПРОСЫ. для того чтобы сделать конструктор копирования нужно написать конст и амперсант
@@ -80,7 +84,7 @@ void str::add(std::string s1) //должно принимать массив чаров или строку с++ и д
 	/*for (int i = size + 1; i <= size + q; i++)
 	{
 		newstrok[i] = a[i - (size + 1)];
-	}//добавляем в новый массив значение строки*/
+	}//добавляем в новый массив значение строки
 	size = size+q; // меняем значение размера
 	strok = newstrok;
 	
@@ -96,6 +100,7 @@ void str::add(char*a) //СДЕЛАНО.РАБОТАЕТ.
 	strok = newstrok;
 };
 void str::insert(std::string s1) // вставляет внутри строки в заданную позицию (в параметре) последовательность символов или строку с++
+// уже передать куда вставить что вставить(какой оно длинны) и на какую позицию
 {
 	std::cout << "текущая строка" << std::endl;
 	for (int i = 0; i < size; i++)
@@ -150,7 +155,7 @@ void str::save() //сохранение в фаил
 };
 void str::load() //чтение из файла
 {
-};
+};*/
 void str::test() // СДЕЛАНО. РАБОТАЕТ. вывод на печать
 { 
 	std::cout << "текущий размер строки" << std::endl;

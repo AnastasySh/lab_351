@@ -11,7 +11,7 @@ int main()
 	setlocale(LC_ALL, "Russian");
 	str A1;
 	A1.test();
-	char a[] = {"12345"};
+	/*char a[] = {"12345"};
 	str A2(a);
 	A2.test();
 	std::string s1 = { "i`mtired" };
@@ -30,5 +30,5 @@ int main()
 	A1.~str();
 	A2.~str();
 	A3.~str();
-	A4.~str();
+	A4.~str();*/
 }
