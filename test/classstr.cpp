@@ -13,34 +13,26 @@ str::str()//СДЕЛАНО.РАБОТАЕТ. нулевой конструктор
 	std::string s1;
 	getline(std::cin, s1);
 	strok = new char[s1.length()+1];
-	size = strlen(strok);
-	/*const char *copyC;
-	copyC = s1.c_str(); 
-	strcpy(strok, copyC); */
+	size = (s1.length()+1);
 	for (int i = 0; i < size; i++)
 	{
 		strok[i] = s1[i];
 	};
 };
-/*str::~str() // вроде сделан нулевой деструктор
+str::~str() // вроде сделан нулевой деструктор
 {
 	delete[]strok;
 };
-str::str(char* a) //СДЕЛАНО. РАБОТАЕТ. ЕСТЬ ВОПРОСЫ. конструктор копирующий из массива чаров
+str::str(char* a) //СДЕЛАНО. РАБОТАЕТ. конструктор копирующий из массива чаров
 {
-	int q = strlen(a);
-	strok = new char[q+1];
-	strcpy(strok, a);
-	/*int q = strlen(a); //почему-то он выделяет больше памяти чем надо. да, первые несколько элементов забиваются нужными значениями
-	strok = new char[q]; //но в дальнейшем идут тупа непонятные знаки. 
-	std::ZeroMemory();
-	for (int i=0; i < q; i++)
+	size = strlen(a)+1;
+	strok = new char[size];
+	for (int i=0; i < size; i++)
 	{
 		strok[i] = a[i];
 	};
-	size = strlen(strok);
 };
-str::str(const str &s1) //СДЕЛАНО. РАБОТАЕТ. ЕСТЬ ВОПРОСЫ. для того чтобы сделать конструктор копирования нужно написать конст и амперсант
+str::str(const str &s1) //СДЕЛАНО. РАБОТАЕТ. для того чтобы сделать конструктор копирования нужно написать конст и амперсант
 {
 	size = s1.size;
 	strok = new char[size];
@@ -51,96 +43,107 @@ str::str(const str &s1) //СДЕЛАНО. РАБОТАЕТ. ЕСТЬ ВОПРОСЫ. для того чтобы сделат
 };
 str::str(std::string s1) //СДЕЛАНО.РАБОТАЕТ. конструктор копирующий из с++ строки
 {
-	strok = new char[s1.length()+1];
-	const char *copyC; //великая проблема в том что с_str копирует только в const_char *, а он не приравнивается в обычному char* на прямую
+	size = s1.length() + 1;
+	strok = new char[size];
+	for (int i = 0; i < size; i++)
+	{
+		strok[i] = s1[i];
+	};
+	/*const char *copyC; //великая проблема в том что с_str копирует только в const_char *, а он не приравнивается в обычному char* на прямую
 	copyC = s1.c_str(); //эта бандура из библиотеки для работы со строками с++
 	strcpy(strok,copyC); // а это со строками С
-	size = strlen(strok);
+	size = strlen(strok);*/
 	};
 int str::getsize() //СДЕЛАНО.РАБОТАЕТ. возврат размера массива
 {
 	return size;
 };
-void str::clear() // СДЕЛАНОю РАБОТАЕТ. очищение нашей строки
+void str::clear() // СДЕЛАНО. РАБОТАЕТ. очищение нашей строки
 {
-	int q = getsize();
-	for (int i=0; i < q; i++)
-	{
-		strok[i] = 0;
-	};
-	
+	char *newstrok = new char[0];
+	size = 0;
+	*newstrok = 0;
+	delete[] strok;
+	strok = newstrok;
+
 };
 void str::add(std::string s1) //должно принимать массив чаров или строку с++ и делать их склейку с изначальной
 {
 	int q = s1.length();
-	char *newstrok = new char[size +q+1]; // создаем новый динамический массив
-	strcpy(newstrok, strok); // копируем туда значение старого
-	delete[] strok; // удаляем старый. вылетает какая то лютая ошибка. ошибка была в том, что мы забыли выделить память под нулевой символ окончания строки. костыли построены, все норм. 
-	const char *copyC; // делаем магию для копирования строки
-	copyC = s1.c_str(); 
-	char *a = new char[q]; 
-	strcpy(a, copyC);
-	strcat(newstrok, a);
-	/*for (int i = size + 1; i <= size + q; i++)
+	char *newstrok = new char[size + q + 1]; // создаем новый динамический массив
+	for (int i = 0; i < size-1; i++)// скорее всего size-1
 	{
-		newstrok[i] = a[i - (size + 1)];
-	}//добавляем в новый массив значение строки
-	size = size+q; // меняем значение размера
+		newstrok[i] = strok[i];
+	}
+	//strcpy(newstrok, strok); // копируем туда значение старого
+	for (int i = size-1; i < size + q; i++)
+	{
+		newstrok[i] = s1[i - (size-1)];
+	}
+	size = size + q; // меняем значение размера
+	delete[]strok;
 	strok = newstrok;
-	
-};
+	};
 void str::add(char*a) //СДЕЛАНО.РАБОТАЕТ.
 {
 	int q =strlen(a);
 	char *newstrok = new char[size + q + 1]; // создаем новый динамический массив
-	strcpy(newstrok, strok); // копируем туда значение старого
-	delete[]strok;
-	strcat(newstrok, a);
+	for (int i = 0; i < size-1; i++)
+	{
+		newstrok[i] = strok[i];
+	}
+	//strcpy(newstrok, strok); // копируем туда значение старого
+	for (int i = size-1; i < size + q; i++)
+	{
+		newstrok[i] = a[i - (size-1)];
+	}
 	size = size + q; // меняем значение размера
+	delete[]strok;
 	strok = newstrok;
 };
-void str::insert(std::string s1) // вставляет внутри строки в заданную позицию (в параметре) последовательность символов или строку с++
+void str::insert(std::string s1) // ДОДЕЛАТЬ. вставляет внутри строки в заданную позицию (в параметре) последовательность символов или строку с++
 // уже передать куда вставить что вставить(какой оно длинны) и на какую позицию
 {
 	std::cout << "текущая строка" << std::endl;
-	for (int i = 0; i < size; i++)
+	for (int i = 0; i < size-1; i++)//-1 и поменять местами номер и элемент
 	{
-		std::cout << strok[i] << " (" <<i <<") ";
+		std::cout  << " (" <<i <<") " << strok[i];
 	};
 	std::cout << std::endl;
 	std::cout << "введите позицию, с которой начнется вставка" << std::endl;
 	LAZHA:
-	int n = 0;
-	std::cin >> n;
-	if (n<0 || n>size)
+	int y = 0;
+	std::cin >> y;
+	if (y<0 || y>size)
 	{
-		std::cout << "лажа какая то, введите номер позиции еще раз" << std::endl;
+		std::cout << "введите номер позиции еще раз" << std::endl;
 			goto LAZHA;
 	}
+	
 	int q = s1.length(); // выясняем количество знаков в строке которую будем добавлять
-	char *bufer = new char[q + 1]; // создаем массив для перегона строки
+	/*char *bufer = new char[q + 1]; // создаем массив для перегона строки
 	const char *copyC; //магия перевода строки в массив чаров
 	copyC = s1.c_str();
-	strcpy(bufer, copyC); // приводим строку к виду массива чаров
+	strcpy(bufer, copyC); // приводим строку к виду массива чаров*/
 	char *newstrok = new char[size + q + 1]; // выделяем память под новую строку
-	char *tail = new char[size - n]; //создаем массив под хвост
-	size = size + q + 1; //меняем размер на новый
+	char *tail = new char[size-y]; //создаем массив под хвост
 	strcpy(newstrok, strok); // копитуем старое
-	for (int i = n; i < q + 1; i++) //копируем хвост 
+	for (int i = y; i < size; i++) //копируем хвост
 	{
-		tail[i - n] = newstrok[i];
+		tail[i - y] = newstrok[i];
 	}
-	for (int i = n; i < q + 1; i++) // копируем строку которую впихиваем уже в новую строку
+	for (int i = y; i < q + 2; i++) // 1 не докопировалась копируем строку которую впихиваем уже в новую строку
 	{
-		newstrok[i] = bufer[i - n];
+		newstrok[i] = s1[i - y];
 	}	
-	for (int i = n+q; i <= size; i++) // приклеиваем хвост
+	size = size + q;// меняем размер на новый
+	for (int i = y+q; i < size; i++) // приклеиваем хвост
 	{
-		newstrok[i] = tail[i - n-q];
+		newstrok[i] = tail[i - y-q];
 	}
-	//strcat(newstrok, tail); // склеиваем 
 	delete[] strok;
 	strok = newstrok;
+	
 };
 //должна быть защита от чтения записи за пределами выделенной памяти 
 //все это счастье должно быть защищено от утечки памяти. то есть следить за выделением и удалением памяти
@@ -155,11 +158,11 @@ void str::save() //сохранение в фаил
 };
 void str::load() //чтение из файла
 {
-};*/
+};
 void str::test() // СДЕЛАНО. РАБОТАЕТ. вывод на печать
 { 
 	std::cout << "текущий размер строки" << std::endl;
-	std::cout << size<< std::endl;
+	std::cout << size-1 << std::endl;
 	std::cout << "текущая строка" << std::endl;
 		for (int i = 0; i < size; i++)
 		{
