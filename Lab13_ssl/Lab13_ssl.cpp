@@ -15,10 +15,11 @@ using namespace std;
 
 int main()
 {
-	//как правило, в литературе, структуры используются для хранения только данных
-	//ни слова не говорится о методах и конструкторах/деструкторах
+	
 	struct name_of_my_struct
 	{
+		//как правило, в литературе, структуры используются для хранения только данных
+	//ни слова не говорится о методах и конструкторах/деструкторах
 		name_of_my_struct()
 		{
 
@@ -38,14 +39,17 @@ int main()
 	unsigned char cryptedtext[256]; //зашифрованный результат
 	unsigned char decryptedtext[256]; //расшифрованный результат
 
-	//1. Создается указатель на несуществующую структуру
-	EVP_CIPHER_CTX *ctx; //structure
-	//2. Для указателя создается пустая структура настроек(метод, ключ, вектор инициализации и т.д.)
-	ctx = EVP_CIPHER_CTX_new();//создание структуры с настройками метода
+	//1. Создается указатель на структуру. то есть это не указатель на несуществующую структуру, как написанно в конспекте, а блин указатель с типом данных этой структуры. ну ты понел.
+	//залог того что этот указатель будет корректно указывать на эту структуру. 
+	EVP_CIPHER_CTX *ctx;
+	
+	//2. Для указателя создается пустая структура настроек(метод, ключ, вектор инициализации и т.д.) вызывается деструктор. мы не лезем и не выясняем что и как он там создает, но на
+	//досуге можно будет почитать. ну вот короче вызываем мы деструктор от указателя, а значит что структура создастся и ссылка на нее запишется в этот указатель который мы создали
+	ctx = EVP_CIPHER_CTX_new();  
 	//3. Структура EVP_CIPHER_CTX заполняется настройками
 	EVP_EncryptInit_ex(ctx, EVP_aes_256_cbc(), NULL, key, iv);//инициализация методом AES, ключом и вектором
 	//4. Сам процесс шифрования - функция EVP_EncryptUpdate
-	int len;
+	int len; //это - длина уже зашифроманного текста походу. 
 	EVP_EncryptUpdate(ctx, cryptedtext, &len, plaintext, plaintext_len);//собственно, шифрование
 	int cryptedtext_len = len;
 
@@ -54,7 +58,7 @@ int main()
 	cryptedtext_len += len;
 
 	//6.Удаление структуры
-	EVP_CIPHER_CTX_free(ctx); \
+	EVP_CIPHER_CTX_free(ctx); 
 		for (int i = 0; i < cryptedtext_len; i++)
 		{
 			cout << hex << cryptedtext[i];
@@ -72,7 +76,7 @@ int main()
 	EVP_DecryptInit_ex(ctx, EVP_aes_256_cbc(), NULL, key, iv);//инициализация методом AES, ключом и вектором
 
 	//3. 
-	EVP_DecryptUpdate(ctx, decryptedtext, &len, cryptedtext, cryptedtext_len);//собственно, шифрование
+	EVP_DecryptUpdate(ctx, decryptedtext, &len, cryptedtext, cryptedtext_len);//собственно, дешифрование
 
 	//4.
 	int decrypted_len = len;
@@ -83,123 +87,76 @@ int main()
 	EVP_CIPHER_CTX_free(ctx);
 	decryptedtext[decrypted_len] = '\0';
 	cout << decryptedtext << endl;
-
-	//AES_cfb128_encrypt()
-
+	
 
 	//шифрование файла производится точно так же, но порциями, в цикле
-	fstream f0, f_encrypted;
-	ofstream("f0.txt", std::fstream::in);
-	f_encrypted.open("f_encrypted.txt", std::fstream::out | std::fstream::trunc);
-	unsigned int number_of_bytes = 0;
-	unsigned int filesize = 0;
-	char buffer[AES_BLOCK_SIZE] = { 0 };
-	char * out_buf[AES_BLOCK_SIZE] = { 0 };
-	AES_KEY aes_key;
-	AES_set_encrypt_key(key, 128, &aes_key);
-	while (true) //бесконечный цикл считывания порций файла, шифрования и записи в другой файл
+	//а теперь представьте что шифрование - перегонный аппарат. шифрование как первая ступень очистки.
+	ifstream filenorm;
+	ofstream filecry;// файлы для шифра и дешифра
+	filenorm.open("test.txt", std::fstream::in | std::fstream::binary); // открытие в бинарном виде для последующего шифра
+	filecry.open("filecry.txt", std::fstream::out | std::fstream::binary); // открытие файла для последующей записи тож бинарка
+	if (!filenorm) {
+		std::cout << "ошибка открытия норм файла"<< std::endl;//Обработка ошибки открытия файла
+	}
+	if (!filecry) {
+		std::cout << "ошибка открытия cry файла" << std::endl;//Обработка ошибки открытия файла
+	}
+	//unsigned char *key = (unsigned char *)"019283745"; //пароль (ключ)
+	//unsigned char *iv = (unsigned char *)"987654321054321"; //инициализирующий вектор
+	char buffer[256] = { 0 }; // буфер для перегонки.
+	char * out_buf[256] = { 0 }; // второй буфер для перегонки на выход. 
+    //unsigned int number_of_bytes = 0; // это то, сколько он уже перегнал. итого у нас уже две перегонные колбы со счетчиком 
+	len = 0; //это длинна шифра
+	ctx = EVP_CIPHER_CTX_new(); // опять юзаем ту ссылочку
+	EVP_EncryptInit_ex(ctx, EVP_aes_256_cbc(), NULL, key, iv); //забиваем нашу структуру настроечками
+	filenorm.read(buffer, 256); // оно считывает в буфер
+	
+	while (filenorm.gcount() > 0)//бесконечный цикл считывания порций файла, шифрования и
+		//записи в другой файл или пока из файла что-то считывается пока размер считанной порции > 0 
 	{
-		//считывание
-		f0.read(buffer, AES_BLOCK_SIZE);
-		number_of_bytes += AES_BLOCK_SIZE;
+		//шифруем
+		EVP_EncryptUpdate(ctx, (unsigned char *)out_buf, &len, (unsigned char *)buffer, filenorm.gcount()); //последний входной параметр: длина входных данных
+		//запись порцайки в фаил
+		filecry.write((const char *)out_buf, len); //записываем все это счастье в фаил /// jib,rf d pdtpljxrf[
+		filenorm.read(buffer, 256); // оно считывает опять в буфер
+	}																				   																								   
+	EVP_EncryptFinal_ex(ctx, (unsigned char *)out_buf, &len); // шлифанули сверху пивком. 
+	filecry.write((const char*)out_buf, len);// записали это в фаил
+	filecry.close();
+	filenorm.close();
+	memset(buffer, 0, sizeof(char) * 256); // моем наши перегонные колбочки от остатков и готовим их к второй ступени перегонки: из шифра в человеческие буквы
+	memset(out_buf, 0, sizeof(char) * 256);
+																										  
+		
+	fstream filecryingmore, whitebearcoming;// файлы для шифра и дешифра
 
-		//шифрование
-		AES_cfb128_encrypt((unsigned char *)buffer,
-			(unsigned char *)out_buf,
-			AES_BLOCK_SIZE,
-			&aes_key, iv, 0,
-			AES_ENCRYPT);
-		f_encrypted.close();
-		f0.close();
-		//запись
-		if (number_of_bytes == filesize) break;
+	filecryingmore.open("filecry.txt", std::fstream::in | std::fstream::binary); // открываем их опять бинарными
+	whitebearcoming.open("whitebearcoming.txt",	std::fstream::out | std::fstream::binary); 
+	
 
-		// --- шифрование файла
-		// производится точно так же, но порциями, в цикле
-		// в цикле
-		/*
-		//1)открытие файлов и настройка параметров OpenSSL
-		//в цикле
-		 while (считанный_фрагмент > 0)
-		 {
-		 //шифрование считанного
-		 //запись зашифрованного массива в файл
-		 //считывание следующего фрагмента
-		 }
-		 //применение финализирующей функции
-		 //запись финализирующего блока в файл
-		 //закрытие файлов
-		*/
-		fstream f0, f_encrypted, f_decrypted;
-		f0.open("f0.txt", std::fstream::in | std::fstream::binary); // файл  с исходными данными
-		//файл для зашифрованных данных
-		f_encrypted.open("f_encrypted.txt",
-			std::fstream::out | std::fstream::trunc | std::fstream::binary);
-
-		char buffer[256] = { 0 };
-		char out_buf[256] = { 0 };
-
-		ctx = EVP_CIPHER_CTX_new();
-		EVP_EncryptInit_ex(ctx, EVP_aes_256_cbc(), NULL, key, iv);
-		len = 0;
-		f0.read(buffer, 256);
-		while (f0.gcount() > 0) //цикл, пока из фАЙЛА ЧТО-ТО СЧИТЫВАЕТСЯ(пока размер считанной порции > 0)
-		{
-			//шифрование порции
-			EVP_EncryptUpdate(ctx, //объект с настройкамии
-				(unsigned char *)out_buf, //входной параметр:ссылка, куда помещать зашифрованные данные
-				&len, //выходной параметр: длина полученного шифра
-				(unsigned char *)buffer,//входной параметр: что шифровать
-				f0.gcount()); //входной параметр: длина входных данных
-
-	//вывод зашифрованной порции в файл
-			f_encrypted.write(out_buf, len);
-
-			//считывание следующей порции
-			f0.read(buffer, 256);
-		}
-		EVP_EncryptFinal_ex(ctx, (unsigned char *)out_buf, &len);
-		f_encrypted.write(out_buf, len);
-		f_encrypted.close();
-		f0.close();
-
-		memset(buffer, 0, sizeof(char) * 256);
-		memset(out_buf, 0, sizeof(char) * 256);
-
-		f_encrypted.open("f_enctypted.txt",
-			std::fstream::in | std::fstream::binary);
-		f_decrypted.open("f_decrypted.txt",
-			std::fstream::in | std::fstream::out | std::fstream::trunc | std::fstream::binary);
-		f_encrypted.read(buffer, 256);
-
-		ctx = EVP_CIPHER_CTX_new();
+		ctx = EVP_CIPHER_CTX_new(); 
 
 		EVP_DecryptInit_ex(ctx, EVP_aes_256_cbc(), NULL, key, iv);
 
-
-		while (f_encrypted.gcount() > 0)
+		filecryingmore.read(buffer, 256);
+		while (filecryingmore.gcount() > 0) // пошла вторая перегоночка из шифра и буквы
 		{
 			// расшифровка 
-			EVP_DecryptUpdate(ctx,
-				(unsigned char *)out_buf,
-				&len,
-				(unsigned char *)buffer,
-				f_encrypted.gcount());
+			EVP_DecryptUpdate(ctx,(unsigned char *)out_buf,	&len,(unsigned char *)buffer, filecryingmore.gcount());
 
 			// запись расшифровки в файл 
-			f_decrypted.write(out_buf, len);
+			whitebearcoming.write((const char *)out_buf, len);
 
 			// чтение следующей порции 
-			f_encrypted.read(buffer, 256);
+			filecryingmore.read(buffer, 256); 
 		}
 
-		EVP_DecryptFinal_ex(ctx, (unsigned char *)out_buf, &len);
-		f_decrypted.write(out_buf, len);
+		EVP_DecryptFinal_ex(ctx, (unsigned char *)out_buf, &len); //если в первый раз у нас была шлифовка пивком, то тут получается зачистка пивком? надо подумать
+		whitebearcoming.write((const char *)out_buf, len);
 
-		f_decrypted.close();
-		f_encrypted.close();
+		whitebearcoming.close();
+		filecryingmore.close();
 
 		system("pause");
 		return 0;
-	}
 };

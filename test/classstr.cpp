@@ -147,7 +147,72 @@ void str::insert(std::string s1) // ДОДЕЛАТЬ. вставляет внутри строки в заданную
 };
 //должна быть защита от чтения записи за пределами выделенной памяти 
 //все это счастье должно быть защищено от утечки памяти. то есть следить за выделением и удалением памяти
-// должен быть код который красиво все это покажет
+str operator+(str &s1, str &s2)
+{
+	int q = s2.size;
+	char *newstrok = new char[s1.size + q + 1]; // создаем новый динамический массив
+	for (int i = 0; i < s1.size - 1; i++)// скорее всего size-1
+	{
+		newstrok[i] = s1.strok[i];
+	}
+	//strcpy(newstrok, strok); // копируем туда значение старого
+	for (int i = s1.size - 1; i < s1.size + q; i++)
+	{
+		newstrok[i] = s2.strok[i - (s1.size - 1)];
+	}
+	s1.size = s1.size + q; // меняем значение размера
+	delete[]s1.strok;
+	s1.strok = newstrok;
+	return s1;
+};
+str operator+(str &s1, std::string &s2)
+{
+	int q = s2.length();
+	char *newstrok = new char[s1.size + q + 1]; // создаем новый динамический массив
+	for (int i = 0; i < s1.size - 1; i++)// скорее всего size-1
+	{
+		newstrok[i] = s1.strok[i];
+	}
+	//strcpy(newstrok, strok); // копируем туда значение старого
+	for (int i = s1.size - 1; i < s1.size + q; i++)
+	{
+		newstrok[i] = s2[i - (s1.size - 1)];
+	}
+	s1.size = s1.size + q; // меняем значение размера
+	delete[]s1.strok;
+	s1.strok = newstrok;
+	return s1;
+};
+str operator+(str &s1, char *a)
+{
+	int q = strlen(a);
+	char *newstrok = new char[s1.size + q + 1]; // создаем новый динамический массив
+	for (int i = 0; i < s1.size - 1; i++)
+	{
+		newstrok[i] = s1.strok[i];
+	}
+	//strcpy(newstrok, strok); // копируем туда значение старого
+	for (int i = s1.size - 1; i < s1.size + q; i++)
+	{
+		newstrok[i] = a[i - (s1.size - 1)];
+	}
+	s1.size = s1.size + q; // меняем значение размера
+	delete[]s1.strok;
+	s1.strok = newstrok;
+	return s1;
+}
+void operator<< (std::ostream &out, str &s1)
+{
+	std::cout << "текущий размер строки" << std::endl;
+	std::cout << s1.size - 1 << std::endl;
+	std::cout << "текущая строка" << std::endl;
+	for (int i = 0; i < s1.size; i++)
+	{
+		std::cout << s1.strok[i];
+	};
+	std::cout << std::endl;
+	
+};
 // должны быть перегрузки + и ввывода на консоль << 
 //методы для шифрования и дешифрования
 void str::find() //осуществляет поиск последовательности чаров или строки с++ в строке класса

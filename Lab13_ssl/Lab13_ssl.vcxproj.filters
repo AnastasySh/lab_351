@@ -27,10 +27,4 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
-  <ItemGroup>
-    <Library Include="..\..\..\ssl\openssl\libcrypto.lib" />
-    <Library Include="..\..\..\ssl\openssl\libcrypto_static.lib" />
-    <Library Include="..\..\..\ssl\openssl\libssl.lib" />
-    <Library Include="..\..\..\ssl\openssl\libssl_static.lib" />
-  </ItemGroup>
 </Project>
