@@ -6,17 +6,19 @@
 #include <string>
 #include <db.h>
 
-myTcpServer::myTcpServer(QObject *parent)
+myTcpServer::myTcpServer(QObject *parent) // конструктор нашего сервера. наследуется от QObject чтобы работать с сигналами и слотами
     : QObject(parent)
 {
-    mTcpServer = new QTcpServer(this);
+    mTcpServer = new QTcpServer(this);  // в конструктор неявно передается параметр this, не надо каждый раз тупить
+    //при виде этого неявного указателя (указатель на адрес объекта класса)
+    connect(mTcpServer, &QTcpServer::newConnection, this, &myTcpServer::slotNewConnection); // функция
 
-    connect(mTcpServer, &QTcpServer::newConnection, this, &myTcpServer::slotNewConnection);
-
-    if (!mTcpServer->listen(QHostAddress::Any, 33333) && server_status == 0) {
+    if (!mTcpServer->listen(QHostAddress::Any, 33333) && server_status == 0) // сервер не слушает порт 33333 и статус==0
+    {
         qDebug() << "server isn't work";
     }
-    else {
+    else
+    {
         server_status = 1;
         qDebug() << "server is work";
     }
@@ -42,12 +44,13 @@ void myTcpServer::slotNewConnection() // подключение нового с�
 }
 
 
-void myTcpServer::slotServerRead() {
+void myTcpServer::slotServerRead() // чтение со слота
+{
 
     /*чтение со слота в массив*/
 
             if (mTcpSocket ->bytesAvailable () >0)
-                {/*если не авторизировались - авторизируемся один раз. и все.*/
+            {/*если не авторизировались - авторизируемся один раз. и все.*/
             QByteArray array = mTcpSocket->readAll();
             qDebug() << array;
 

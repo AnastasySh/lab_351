@@ -9,7 +9,7 @@ class myTcpServer : public QObject
     Q_OBJECT
 
 public:
-    myTcpServer(QObject *parent = nullptr);
+    myTcpServer(QObject *parent = nullptr); // nullptr - специальная штука в С++11 для зануления указателей
     ~myTcpServer();
 
 public slots:
