@@ -1,5 +1,6 @@
 git add *.cpp 
 git add *.h 
+git add *.pro
 git add *.sln
 git add  *.vcxproj 
 git add *.user 
