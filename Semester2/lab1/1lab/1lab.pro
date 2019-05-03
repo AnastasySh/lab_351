@@ -6,7 +6,7 @@
 
 QT       += core gui
 QT += network
-
+QT += sql
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = 1lab
@@ -27,14 +27,26 @@ CONFIG += c++11
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp
+        mainwindow.cpp \
+    moder.cpp \
+    new_user.cpp \
+    delete_rec.cpp \
+    user_manager.cpp
 
 HEADERS += \
-        mainwindow.h
+        mainwindow.h \
+    moder.h \
+    new_user.h \
+    delete_rec.h \
+    user_manager.h
 
 FORMS += \
         mainwindow.ui \
-    db.ui
+    moder.ui \
+    new_user.ui \
+    delete.ui \
+    delete_rec.ui \
+    user_manager.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

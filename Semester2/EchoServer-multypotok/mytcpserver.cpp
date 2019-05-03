@@ -10,7 +10,7 @@
 MyTcpServer::MyTcpServer(QObject *parent) : QObject(parent)
 {
     tcpServer = new QTcpServer(this);
-       connect(tcpServer, SIGNAL(newConnection()), this, SLOT(slotNewConnection()));
+    connect(tcpServer,SIGNAL(newConnection()),this,SLOT(slotNewConnection()));
        if (!tcpServer->listen(QHostAddress::Any, 33333) && server_status==0) {
            qDebug() <<  QObject::tr("Unable to start the server: %1.").arg(tcpServer->errorString());
        } else {
@@ -23,23 +23,24 @@ void MyTcpServer::slotNewConnection()
 {
     if(server_status==1){
         qDebug() << QString::fromUtf8("new client");
-        QTcpSocket* clientSocket=tcpServer->nextPendingConnection();
-        int idusersocs=clientSocket->socketDescriptor();
+        QTcpSocket* clientSocket = tcpServer->nextPendingConnection();
+        int idusersocs = clientSocket->socketDescriptor();
         SClients[idusersocs]=clientSocket;
-        connect(SClients[idusersocs],SIGNAL(readyRead()),this, SLOT(slotServerRead()));
-         connect(SClients[idusersocs],SIGNAL(disconected()),this, SLOT(slotClientDisconnected()));
+        connect(SClients[idusersocs],SIGNAL(readyRead()),this,SLOT(slotServerRead()));
+        //connect(SClients[idusersocs],SIGNAL(disconected()),this,SLOT(slotClientDisconnected())); потом реализовать дисконект
     }
 }
 
 void MyTcpServer::slotServerRead()
 {
-    /*if (mTcpSocket ->bytesAvailable () >0)
-    {/*если не авторизировались - авторизируемся один раз. и все.*/
     QTcpSocket* clientSocket = (QTcpSocket*)sender();
+    int idusersocs=clientSocket->socketDescriptor();
+    QTextStream os(clientSocket);
+    if (clientSocket ->bytesAvailable () >0) {
+    /*если не авторизировались - авторизируемся один раз. и все.*/
     QByteArray array = clientSocket ->readAll();
     qDebug() << "array is" + array;
     std::string message, name_of_func, login, password;
-
     message = array.toStdString();
     qDebug() << "message is " + QString::fromStdString(message);
     //ищем название функции  // пробел как разделитель в строке
@@ -57,8 +58,10 @@ void MyTcpServer::slotServerRead()
   // password.erase(password.length()-2, 2);
    qDebug() << "pass is " + QString::fromStdString(password);
     message.erase(0,pos+1);
-   qDebug() << authorize(login, password);
-   send_to_client(authorize(login,password), clientSocket);
+
+   //qDebug() << authorize(login, password);
+   send_to_client("moder",clientSocket);
+  }
 
 
 

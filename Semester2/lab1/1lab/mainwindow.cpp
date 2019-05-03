@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "moder.h"
 #include <fstream>
 #include <qfile.h>
 #include <qdebug.h>
@@ -16,6 +17,7 @@
 
 
 
+
 // инициализация сокета в конструкторе
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -24,13 +26,6 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-
-ClientSocket = new QTcpSocket (this); // инициализация сокета
-ClientSocket -> connectToHost("127.0.0.1", 33333); // сокет подключается к порту.
-
-connect(ClientSocket,SIGNAL(connected()),this,SLOT(slot_connected()));
-connect(ClientSocket,SIGNAL(readyRead()),this,SLOT(slot_read()));// вызываем
-
 }
 
 MainWindow::~MainWindow()
@@ -38,14 +33,17 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_pushButton_clicked() //обработка формы подготовка сообщения к отправке
+void MainWindow::on_pushButton_clicked()
 {
-
+   ClientSocket = new QTcpSocket (this);
+   ClientSocket -> connectToHost("127.0.0.1", 33333); // сокет подключается к порту.
+   connect(ClientSocket,SIGNAL( connected() ),this,SLOT( slot_connected() ) ); // что-то не так с этими двумя строками
+   connect(ClientSocket,SIGNAL(readyRead()),this,SLOT(slot_read()));
    QString log = ui->lineLog->text(); /*считывание строки из поля*/
    QString pass = ui->linePass->text();
    QByteArray passH = pass.toUtf8();// хэшируем пароль алгоритмом sha256. передаваться он будет только в таком виде.
-  qDebug() << passH;
-  qDebug() <<  QCryptographicHash::hash(passH, QCryptographicHash::Sha256).toHex();
+    qDebug() << passH;
+    qDebug() <<  QCryptographicHash::hash(passH, QCryptographicHash::Sha256).toHex();
   //passH = QCryptographicHash::hash(passH, QCryptographicHash::Sha256).toHex(); // почему то без toHex хэш не хэш
   qDebug() << passH;
   // в идеале здесь сразу должна быть функция, которая клеит qarraу добавляя auth, и отправляет серверу.
@@ -69,19 +67,25 @@ void MainWindow::slot_read()
     {
     QByteArray array;
     array = ClientSocket -> readAll();
-    qDebug() << array;
     std::string message;
     message = array.toStdString();
     qDebug() << QString::fromStdString(message);
-
-    QMessageBox msg2;
-    msg2.setText(QString::fromStdString(message));
-
+    if(message == "moder"){
+     moder *M = new moder;
+     M ->show();
+    }
+    else if (message == "manager") {
+        moder *M = new moder;
+        M ->show();
+    }
+    else {
+        moder *M = new moder;
+        M ->show();
+    }
   }
 
- int idusersocs=ClientSocket->socketDescriptor();
- QTextStream os(ClientSocket);
- qDebug()<<os.readAll();
+ //int idusersocs=ClientSocket->socketDescriptor();
+
 };
 void MainWindow::send_to_server (QString message)
 {
