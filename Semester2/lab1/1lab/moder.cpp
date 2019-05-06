@@ -1,15 +1,24 @@
 #include "moder.h"
 #include "new_user.h"
+#include "mainwindow.h"
 #include "ui_moder.h"
 #include "delete_rec.h"
 #include "QStandardItemModel"
 #include "QStandardItem"
+#include <QTcpServer>
+#include <QTcpSocket>
 
-moder::moder(QWidget *parent) :
+moder::moder(QWidget *parent, QTcpSocket *ClientSock) :
     QWidget(parent),
     ui(new Ui::moder)
 {
+
     ui->setupUi(this);
+
+    ClientSocket = ClientSock;
+    //connect(ClientSocket,SIGNAL( connected() ),this,SLOT( slot_connected() ) ); // что-то не так с этими двумя строками
+    //connect(ClientSocket,SIGNAL(readyRead()),this,SLOT(slot_read()));
+
     this->setupModel("test",
                      QStringList() << trUtf8("login")
                                    << trUtf8("password")
@@ -19,6 +28,7 @@ moder::moder(QWidget *parent) :
     /* Инициализируем внешний вид таблицы с данными
      * */
     this->createUI();
+    send_to_server("select&*&Test&");
 }
 
 moder::~moder()
@@ -80,3 +90,10 @@ void moder::on_delete_button_clicked()
     delete_rec *D = new delete_rec;
     D ->show();
 }
+
+void moder::send_to_server(QString message)
+{
+QByteArray array;
+array.append(message);
+ClientSocket -> write(array); // то что мы отправляем. в виде Qstring
+};

@@ -14,6 +14,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    QTcpSocket* get_socket();
 
 private slots: // cлоты которые есть в окне
     void on_pushButton_clicked();
@@ -21,6 +22,7 @@ private slots: // cлоты которые есть в окне
     void slot_read();
     void send_to_server (QString message);
     void disconnected();
+
 
 private:
     Ui::MainWindow *ui;

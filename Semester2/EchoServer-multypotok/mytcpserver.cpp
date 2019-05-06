@@ -36,14 +36,13 @@ void MyTcpServer::slotServerRead()
     QTcpSocket* clientSocket = (QTcpSocket*)sender();
     int idusersocs=clientSocket->socketDescriptor();
     QTextStream os(clientSocket);
-    if (clientSocket ->bytesAvailable () >0) {
-    /*если не авторизировались - авторизируемся один раз. и все.*/
+
+if (clientSocket ->bytesAvailable () >0) {
     QByteArray array = clientSocket ->readAll();
     qDebug() << "array is" + array;
     std::string message, name_of_func, login, password;
     message = array.toStdString();
     qDebug() << "message is " + QString::fromStdString(message);
-    //ищем название функции  // пробел как разделитель в строке
     int pos = message.find("&");
     // он нашел где первый &.
     name_of_func = message.substr(0,pos);
@@ -59,17 +58,10 @@ void MyTcpServer::slotServerRead()
    qDebug() << "pass is " + QString::fromStdString(password);
     message.erase(0,pos+1);
 
-   //qDebug() << authorize(login, password);
-   send_to_client("moder",clientSocket);
+ //  qDebug() << authorize(login, password);
+   send_to_client(authorize(login, password),clientSocket);
   }
-
-
-
- /*int idusersocs=clientSocket->socketDescriptor();
- QTextStream os(clientSocket);
- qDebug()<<os.readAll();*/
-
- }
+}
 
 void MyTcpServer::send_to_client (QString message, QTcpSocket* clientSocket)
 {

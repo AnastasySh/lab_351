@@ -71,11 +71,11 @@ void MainWindow::slot_read()
     message = array.toStdString();
     qDebug() << QString::fromStdString(message);
     if(message == "moder"){
-     moder *M = new moder;
+     moder *M = new moder(nullptr, ClientSocket);
      M ->show();
     }
     else if (message == "manager") {
-        moder *M = new moder;
+        moder *M = new moder(nullptr, ClientSocket);
         M ->show();
     }
     else {

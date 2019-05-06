@@ -18,6 +18,8 @@ public slots:
     void slotClientDisconnected();
     void send_to_client(QString message, QTcpSocket* clientSocket);
 
+
+
 private:
     QTcpServer *tcpServer;
     int server_status;
