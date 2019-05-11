@@ -1,23 +1,104 @@
 #include "db.h"
-QString authorize(std::string login, std::string password)
-{
-    QString result;
-    if (login == "admin" && password == "123")
-    {
-        result = "admin";
+#include <QCoreApplication>
+#include <QVariant>
+#include <QDebug>
+#include <QSqlDatabase>
+#include <QSqlQuery>
+#include <QSqlError>
+#include <QSqlRecord>
+#include <QSqlTableModel>
 
+bool openDB(QString name, QSqlDatabase& db){
+
+    db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName(name);
+    if(!db.open()) {
+        qDebug()<<db.lastError().text();
+        qDebug()<< "not open";
+        return false;
     }
-    else if (login == "manager" && password == "123")
+    else {
+        qDebug()<< "open";
+        return true;
+    }
+}
+QString authorize(QByteArray login, QByteArray password){
+
+    QSqlDatabase db;
+    openDB("Test",db);
+    QSqlQuery query(db);
+    query.prepare("SELECT * FROM user WHERE login = :log AND password = :pass");
+    QString log = login;
+    QString pass = password; // если не будет этих строк - все не зработает
+    query.bindValue(":pass", pass);
+    query.bindValue(":log", log);
+    query.exec();
+    QString status;
+    query.next();
+    QSqlRecord rec = query.record();
+    status = "authAnswer&";
+    status += query.value(rec.indexOf("status")).toString();
+    qDebug() << status;
+    if (status == "")
     {
-      result = "manager";
+        qDebug() << "error authorization";
     }
-    else if (login == "user" && password == "123")
-    {
-       result = "user";
+    else {
+       qDebug() << "authorization";
     }
-    else
-    {
-    result = "error";
+    db.close();
+    return status;
+}
+QByteArray selectAll(QByteArray what, QByteArray where){
+
+    QSqlDatabase db;
+    openDB("Test",db);
+    QSqlQuery query(db);
+    int n;
+    QByteArray all = "";
+    query.prepare("pragma table_info(user)");
+    query.exec();
+    QSqlRecord rec = query.record();
+    while(query.next()){
+        all += query.value(rec.indexOf("name")).toString();
+        all += "&";
+        n++;
     }
-    return result;
+    query.clear();
+    query.prepare("SELECT * FROM user"); // ошибка в выполнении запроса
+    QString whatt = what;
+    QString wherre = where;
+    query.bindValue(":what", whatt);
+    query.bindValue(":where", wherre);
+    query.exec();
+    rec = query.record();
+    qDebug() << all;
+    while(query.next()){ //пролетает весь цикл
+        all += query.value(rec.indexOf("login")).toString();
+        all += "&";
+        all += query.value(rec.indexOf("password")).toString();
+        all += "&";
+        all += query.value(rec.indexOf("status")).toString();
+        all += "&";
+    }
+    all.prepend('&');
+    all.prepend(n+'0');
+    all.prepend("selectAllAnswer");
+    qDebug() << QString::fromStdString(all.toStdString());
+    db.close();
+    return all;
+}
+QString select(QByteArray what, QByteArray where, QByteArray condition){
+
+    QSqlDatabase db;
+    openDB("Test",db);
+    QSqlQuery query(db);
+    query.prepare("SELECT (:what) FROM (:where) (:condition)");
+    QString whatt = what;
+    QString wherre = where;
+    QString cond = condition;
+    query.bindValue(":what", what);
+    query.bindValue(":where", where);
+    query.bindValue(":where", cond);
+    query.exec();
 }

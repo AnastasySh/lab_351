@@ -10,9 +10,9 @@ TEMPLATE = app
 
 SOURCES += main.cpp \
     mytcpserver.cpp \
-    ../lab3/untitled/db.cpp
+    db.cpp
 
 HEADERS += \
     mytcpserver.h \
-    ../lab3/untitled/db.h
+    db.h
 

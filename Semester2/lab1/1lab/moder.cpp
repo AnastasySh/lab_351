@@ -7,71 +7,57 @@
 #include "QStandardItem"
 #include <QTcpServer>
 #include <QTcpSocket>
+#include <QStandardItemModel>
 
 moder::moder(QWidget *parent, QTcpSocket *ClientSock) :
     QWidget(parent),
     ui(new Ui::moder)
 {
-
     ui->setupUi(this);
-
     ClientSocket = ClientSock;
-    //connect(ClientSocket,SIGNAL( connected() ),this,SLOT( slot_connected() ) ); // что-то не так с этими двумя строками
-    //connect(ClientSocket,SIGNAL(readyRead()),this,SLOT(slot_read()));
-
-    this->setupModel("test",
-                     QStringList() << trUtf8("login")
-                                   << trUtf8("password")
-                                   << trUtf8("data")
-     );
-
-    /* Инициализируем внешний вид таблицы с данными
-     * */
-    this->createUI();
-    send_to_server("select&*&Test&");
+    connect(ClientSocket,SIGNAL(readyRead()),this,SLOT(slot_read()));
+    send_to_server("selectAll&*&user");
 }
 
 moder::~moder()
 {
     delete ui;
-
-
 }
-void moder::setupModel(const QString &tableName, const QStringList &headers)
-{
-    /* Производим инициализацию модели представления данных
-     * с установкой имени таблицы в базе данных, по которому
-     * будет производится обращение в таблице
-     * */
-    model = new QSqlTableModel(this);
-    model->setTable(tableName);
+void moder::drawTable(){
+tableDB = new QStandardItemModel(1, 6, this);
+QStandardItem *item;
+ui->tableDB->setModel(tableDB);
+tableDB->setHeaderData(0, Qt::Horizontal, "login");
+tableDB->setHeaderData(1, Qt::Horizontal, "password");
+tableDB->setHeaderData(2, Qt::Horizontal, "status");
 
-    /* Устанавливаем названия колонок в таблице с сортировкой данных
-     * */
-    for(int i = 0, j = 0; i < model->columnCount(); i++, j++){
-        model->setHeaderData(i,Qt::Horizontal,headers[j]);
-    }
-    // Устанавливаем сортировку по возрастанию данных по нулевой колонке
-    //model->setSort(0,Qt::AscendingOrder);
+/*
+query.exec("SELECT * FROM database");
+QSqlRecord rec = query.record();
+const int idIndex = rec.indexOf( "id");
+const int fioIndex = rec.indexOf( "fio");
+const int typeIndex = rec.indexOf( "type");
+const int priceIndex = rec.indexOf("price");
+const int countIndex = rec.indexOf("count");
+const int dateIndex = rec.indexOf( "date");
+
+while(query.next()){
+item = new QStandardItem(query.value(idIndex).toString());
+tableDB->setItem(i, 0, item);
+item = new QStandardItem(query.value(fioIndex).toString());
+tableDB->setItem(i, 1, item);
+item = new QStandardItem(query.value(typeIndex).toString());
+tableDB->setItem(i, 2, item);
+item = new QStandardItem(query.value(priceIndex).toString());
+tableDB->setItem(i, 3, item);
+item = new QStandardItem(query.value(countIndex).toString());
+tableDB->setItem(i, 4, item);
+item = new QStandardItem(query.value(dateIndex).toString());
+tableDB->setItem(i, 5, item);
+i++;
+
+}*/
 }
-
-void moder::createUI()
-{
-    ui->tableView->setModel(model);     // Устанавливаем модель на TableView
-    //ui->tableView->setColumnHidden(0, true);    // Скрываем колонку. эт не нужно но пусть будет
-    // Разрешаем выделение строк
-    ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
-    // Устанавливаем режим выделения лишь одно строки в таблице
-    ui->tableView->setSelectionMode(QAbstractItemView::SingleSelection);
-    // Устанавливаем размер колонок по содержимому
-    ui->tableView->resizeColumnsToContents();
-    ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    ui->tableView->horizontalHeader()->setStretchLastSection(true);
-
-    model->select(); // Делаем выборку данных из таблицы
-}
-
-
 
 void moder::on_new_button_clicked()
 {
@@ -85,15 +71,20 @@ void moder::on_edit_button_clicked()
     N ->show();
 }
 
+void moder::selectAllAnswer(QByteArray array){
+
+}
+
 void moder::on_delete_button_clicked()
 {
     delete_rec *D = new delete_rec;
     D ->show();
 }
 
+
 void moder::send_to_server(QString message)
 {
 QByteArray array;
 array.append(message);
 ClientSocket -> write(array); // то что мы отправляем. в виде Qstring
-};
+}

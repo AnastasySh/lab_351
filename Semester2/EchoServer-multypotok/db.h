@@ -1,7 +1,8 @@
 #ifndef DB_H
 #define DB_H
 #include <QString>
-
-QString authorize(std::string login, std::string password) ;
-
+bool openDB(QString name);
+QString authorize(QByteArray login, QByteArray password);
+QByteArray selectAll(QByteArray login, QByteArray password);
+QString select(QByteArray login, QByteArray password, QByteArray condition);
 #endif // DB_H

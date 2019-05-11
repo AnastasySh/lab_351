@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_moder_t {
-    QByteArrayData data[7];
-    char stringdata0[100];
+    QByteArrayData data[6];
+    char stringdata0[87];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -36,13 +36,12 @@ QT_MOC_LITERAL(1, 6, 21), // "on_new_button_clicked"
 QT_MOC_LITERAL(2, 28, 0), // ""
 QT_MOC_LITERAL(3, 29, 22), // "on_edit_button_clicked"
 QT_MOC_LITERAL(4, 52, 24), // "on_delete_button_clicked"
-QT_MOC_LITERAL(5, 77, 14), // "send_to_server"
-QT_MOC_LITERAL(6, 92, 7) // "message"
+QT_MOC_LITERAL(5, 77, 9) // "slot_read"
 
     },
     "moder\0on_new_button_clicked\0\0"
     "on_edit_button_clicked\0on_delete_button_clicked\0"
-    "send_to_server\0message"
+    "slot_read"
 };
 #undef QT_MOC_LITERAL
 
@@ -63,13 +62,13 @@ static const uint qt_meta_data_moder[] = {
        1,    0,   34,    2, 0x08 /* Private */,
        3,    0,   35,    2, 0x08 /* Private */,
        4,    0,   36,    2, 0x08 /* Private */,
-       5,    1,   37,    2, 0x08 /* Private */,
+       5,    0,   37,    2, 0x08 /* Private */,
 
  // slots: parameters
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
-    QMetaType::Void, QMetaType::QString,    6,
+    QMetaType::Void,
 
        0        // eod
 };
@@ -83,10 +82,11 @@ void moder::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void 
         case 0: _t->on_new_button_clicked(); break;
         case 1: _t->on_edit_button_clicked(); break;
         case 2: _t->on_delete_button_clicked(); break;
-        case 3: _t->send_to_server((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 3: _t->slot_read(); break;
         default: ;
         }
     }
+    Q_UNUSED(_a);
 }
 
 QT_INIT_METAOBJECT const QMetaObject moder::staticMetaObject = { {

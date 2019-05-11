@@ -36,38 +36,33 @@ void MyTcpServer::slotServerRead()
     QTcpSocket* clientSocket = (QTcpSocket*)sender();
     int idusersocs=clientSocket->socketDescriptor();
     QTextStream os(clientSocket);
-
-if (clientSocket ->bytesAvailable () >0) {
-    QByteArray array = clientSocket ->readAll();
-    qDebug() << "array is" + array;
-    std::string message, name_of_func, login, password;
-    message = array.toStdString();
-    qDebug() << "message is " + QString::fromStdString(message);
-    int pos = message.find("&");
-    // он нашел где первый &.
-    name_of_func = message.substr(0,pos);
-    qDebug() << "name func is " + QString::fromStdString(name_of_func); // это он вывел
-    message.erase(0,pos+1); // обрезка
-    pos = message.find("&");
-   login = message.substr(0,pos);
-   qDebug() << "login is " + QString::fromStdString(login); // это он тоже вывел
-    message.erase(0,pos+1);
-    pos = message.find("&");
-   password = message.substr(0,pos);
-  // password.erase(password.length()-2, 2);
-   qDebug() << "pass is " + QString::fromStdString(password);
-    message.erase(0,pos+1);
-
- //  qDebug() << authorize(login, password);
-   send_to_client(authorize(login, password),clientSocket);
-  }
+        if (clientSocket ->bytesAvailable () >0) {
+            QByteArray array = clientSocket ->readAll();
+            qDebug() << "array is" + array;
+            QList <QByteArray> all = array.split('&');
+            qDebug() << "name func is " +  all[0]; // это он вывел
+                if (all[0] == "auth") {
+                    send_to_client(authorize(all[1], all[2]), clientSocket);
+                }
+                else if (all[0] == "selectAll") {
+                    send_to_client(selectAll(all[1], all[2]), clientSocket);
+                }
+                else if (all[0] == "select") {
+                    send_to_client(select(all[1], all[2], all [3]), clientSocket);
+                }
+        }
 }
 
 void MyTcpServer::send_to_client (QString message, QTcpSocket* clientSocket)
 {
 QByteArray array;
 array.append(message);
-clientSocket->write(array);// то что мы отправляем. в виде Qstring
+clientSocket->write(array);
+};
+
+void MyTcpServer::send_to_client (QByteArray message, QTcpSocket* clientSocket)
+{
+clientSocket->write(message);
 };
 
 void MyTcpServer::slotClientDisconnected()

@@ -23,7 +23,7 @@ QT_BEGIN_NAMESPACE
 class Ui_moder
 {
 public:
-    QTableView *tableView;
+    QTableView *tableDB;
     QPushButton *new_button;
     QPushButton *delete_button;
     QPushButton *edit_button;
@@ -34,10 +34,10 @@ public:
     {
         if (moder->objectName().isEmpty())
             moder->setObjectName(QString::fromUtf8("moder"));
-        moder->resize(884, 510);
-        tableView = new QTableView(moder);
-        tableView->setObjectName(QString::fromUtf8("tableView"));
-        tableView->setGeometry(QRect(40, 40, 811, 361));
+        moder->resize(902, 523);
+        tableDB = new QTableView(moder);
+        tableDB->setObjectName(QString::fromUtf8("tableDB"));
+        tableDB->setGeometry(QRect(40, 40, 811, 361));
         new_button = new QPushButton(moder);
         new_button->setObjectName(QString::fromUtf8("new_button"));
         new_button->setGeometry(QRect(40, 410, 201, 21));

@@ -17,6 +17,7 @@ public slots:
     void slotServerRead();
     void slotClientDisconnected();
     void send_to_client(QString message, QTcpSocket* clientSocket);
+    void send_to_client (QByteArray message, QTcpSocket* clientSocket);
 
 
 

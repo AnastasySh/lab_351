@@ -11,7 +11,7 @@
 #include <QMessageBox>
 #include <QCoreApplication>
 #include <QTextStream>
-#include <QBitArray>
+#include <QByteArray>
 #include <QMessageBox>
 
 
@@ -63,25 +63,29 @@ void MainWindow::slot_connected()
 };
 void MainWindow::slot_read()
 {
-    while(ClientSocket -> bytesAvailable()>0) // пока хоть что-то считывается
-    {
-    QByteArray array;
-    array = ClientSocket -> readAll();
-    std::string message;
-    message = array.toStdString();
-    qDebug() << QString::fromStdString(message);
-    if(message == "moder"){
-     moder *M = new moder(nullptr, ClientSocket);
-     M ->show();
-    }
-    else if (message == "manager") {
-        moder *M = new moder(nullptr, ClientSocket);
-        M ->show();
-    }
-    else {
-        moder *M = new moder;
-        M ->show();
-    }
+    while(ClientSocket -> bytesAvailable()>0){
+        QByteArray array;
+        array = ClientSocket -> readAll();
+        QList <QByteArray> all = array.split('&');
+        if (all[0] == "authAnswer"){
+            if(all[1] == "moder"){
+                moder *M = new moder(nullptr, ClientSocket);
+                M ->show();
+                M -> moder::selectAllAnswer(array);
+                this -> hide();
+            }
+            else if (all[1] == "manager") {
+                moder *M = new moder(nullptr, ClientSocket);
+                M ->show();
+            }
+            else {
+                moder *M = new moder;
+                M ->show();
+            }
+        }
+        else if (all[0] == "selectAllAnswer") {
+        M -> moder::selectAllAnswer(array);
+        }
   }
 
  //int idusersocs=ClientSocket->socketDescriptor();
