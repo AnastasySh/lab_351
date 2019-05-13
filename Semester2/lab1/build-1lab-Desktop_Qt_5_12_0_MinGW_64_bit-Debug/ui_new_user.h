@@ -13,8 +13,8 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QDialogButtonBox>
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QLineEdit>
+#include <QtWidgets/QFormLayout>
+#include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
 
@@ -22,41 +22,25 @@ class Ui_new_user
 {
 public:
     QDialogButtonBox *buttonBox;
-    QLineEdit *lineEdit;
-    QLineEdit *lineEdit_2;
-    QLineEdit *lineEdit_3;
-    QLabel *label;
-    QLabel *label_2;
-    QLabel *label_3;
+    QWidget *formLayoutWidget;
+    QFormLayout *formLayout;
 
     void setupUi(QDialog *new_user)
     {
         if (new_user->objectName().isEmpty())
             new_user->setObjectName(QString::fromUtf8("new_user"));
-        new_user->resize(400, 300);
+        new_user->resize(449, 341);
         buttonBox = new QDialogButtonBox(new_user);
         buttonBox->setObjectName(QString::fromUtf8("buttonBox"));
-        buttonBox->setGeometry(QRect(30, 240, 341, 32));
+        buttonBox->setGeometry(QRect(90, 280, 341, 32));
         buttonBox->setOrientation(Qt::Horizontal);
         buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
-        lineEdit = new QLineEdit(new_user);
-        lineEdit->setObjectName(QString::fromUtf8("lineEdit"));
-        lineEdit->setGeometry(QRect(140, 90, 231, 21));
-        lineEdit_2 = new QLineEdit(new_user);
-        lineEdit_2->setObjectName(QString::fromUtf8("lineEdit_2"));
-        lineEdit_2->setGeometry(QRect(140, 130, 231, 21));
-        lineEdit_3 = new QLineEdit(new_user);
-        lineEdit_3->setObjectName(QString::fromUtf8("lineEdit_3"));
-        lineEdit_3->setGeometry(QRect(140, 170, 231, 21));
-        label = new QLabel(new_user);
-        label->setObjectName(QString::fromUtf8("label"));
-        label->setGeometry(QRect(40, 90, 47, 13));
-        label_2 = new QLabel(new_user);
-        label_2->setObjectName(QString::fromUtf8("label_2"));
-        label_2->setGeometry(QRect(40, 130, 61, 16));
-        label_3 = new QLabel(new_user);
-        label_3->setObjectName(QString::fromUtf8("label_3"));
-        label_3->setGeometry(QRect(40, 170, 47, 13));
+        formLayoutWidget = new QWidget(new_user);
+        formLayoutWidget->setObjectName(QString::fromUtf8("formLayoutWidget"));
+        formLayoutWidget->setGeometry(QRect(30, 20, 371, 241));
+        formLayout = new QFormLayout(formLayoutWidget);
+        formLayout->setObjectName(QString::fromUtf8("formLayout"));
+        formLayout->setContentsMargins(0, 0, 0, 0);
 
         retranslateUi(new_user);
         QObject::connect(buttonBox, SIGNAL(accepted()), new_user, SLOT(accept()));
@@ -68,9 +52,6 @@ public:
     void retranslateUi(QDialog *new_user)
     {
         new_user->setWindowTitle(QApplication::translate("new_user", "Dialog", nullptr));
-        label->setText(QApplication::translate("new_user", "login", nullptr));
-        label_2->setText(QApplication::translate("new_user", "password", nullptr));
-        label_3->setText(QApplication::translate("new_user", "status", nullptr));
     } // retranslateUi
 
 };

@@ -131,3 +131,12 @@ QString select(QByteArray what, QByteArray where, QByteArray condition){
     db.close();
     return all;
 }
+QString newQuery(QByteArray what, QByteArray where, QByteArray whatExactly){
+
+    QSqlDatabase db;
+    openDB("Test",db);
+    QSqlQuery query(db);
+    query.prepare("INSERT INTO "+where+"("+whatExactly+") VALUES "+what);
+    query.exec();
+    return selectAll("*",where);
+}

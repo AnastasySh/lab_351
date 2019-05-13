@@ -50,6 +50,11 @@ void MyTcpServer::slotServerRead()
                 else if (all[0] == "select") {
                     send_to_client(select(all[1], all[2], all [3]), clientSocket);
                 }
+                else if (all[0] == "newQuery") {
+
+                    send_to_client(newQuery(all[1], all[2], all [3]), clientSocket);
+
+                }
         }
 }
 

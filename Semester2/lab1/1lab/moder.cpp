@@ -59,9 +59,9 @@ i++;
 }*/
 }
 
-void moder::on_new_button_clicked()
+void moder::on_new_button_clicked( QByteArray name)
 {
-    new_user *N = new new_user;
+    new_user *N = new new_user (nullptr, name);
     N ->show();
 }
 
@@ -71,8 +71,29 @@ void moder::on_edit_button_clicked()
     N ->show();
 }
 
-void moder::selectAllAnswer(QByteArray array){
-
+void moder::selectAllAnswer(QList <QByteArray> all){
+    int n = all[1].toInt();
+    tableDB = new QStandardItemModel(1, n, this);
+    QStandardItem *item;
+    ui->tableDB->setModel(tableDB);
+    for (int i = 0; i < n; i++){
+        tableDB->setHeaderData(i, Qt::Horizontal, all[i+2]);
+    }
+    int m =0;
+    int k = 0;
+    for (int i = 0; i < (all.size()-n-2); i++) {
+        if (i>0){
+            if (i%n==0){
+                k+=1;
+        }
+        }
+        item = new QStandardItem(QString::fromStdString(all[i+2+n].toStdString()));
+        if (m == all[1].toInt()){
+            m = 0;
+        }
+        tableDB->setItem(k, m, item);
+        m++;
+    }
 }
 
 void moder::on_delete_button_clicked()
@@ -84,7 +105,10 @@ void moder::on_delete_button_clicked()
 void moder::slot_read1(QByteArray array){
 
         QList <QByteArray> all = array.split('&');
-        if (all[0] == "selectAllAnswer"){
+        if (all[0] == "selectAllAnswer" || all[0] == "selectAnswer"){
+          selectAllAnswer(all);
+        }
+        else if (all[0] == "DeleteAnswer") {
 
         }
 }

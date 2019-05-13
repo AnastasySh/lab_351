@@ -20,19 +20,16 @@ public:
     ~moder();
     QSqlTableModel  *model;
     QStandardItemModel* tableDB;
-    void selectAllAnswer(QByteArray array);
+    void selectAllAnswer(QList <QByteArray> all);
 
 private slots:
-    void on_new_button_clicked();
+    void on_new_button_clicked(QByteArray name);
 
     void on_edit_button_clicked();
 
     void on_delete_button_clicked();
 
-    void slot_read1(QByteArray arr){
-        qDebug()<<"slot_read1\n";
-
-    }
+    void slot_read1(QByteArray arr);
 
 
 

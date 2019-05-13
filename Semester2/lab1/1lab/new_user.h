@@ -12,8 +12,14 @@ class new_user : public QDialog
     Q_OBJECT
 
 public:
-    explicit new_user(QWidget *parent = nullptr);
+    explicit new_user(QWidget *parent = nullptr, QByteArray name = nullptr);
     ~new_user();
+signals:
+    void createDyn ();
+
+public slots:
+    void create_dyn();    // СЛОТ-обработчик нажатия кнопки добавления
+
 
 private:
     Ui::new_user *ui;

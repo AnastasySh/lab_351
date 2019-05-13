@@ -31,14 +31,18 @@ SOURCES += \
     moder.cpp \
     new_user.cpp \
     delete_rec.cpp \
-    user_manager.cpp
+    user_manager.cpp \
+    dynamicedit.cpp \
+    dynamicline.cpp
 
 HEADERS += \
         mainwindow.h \
     moder.h \
     new_user.h \
     delete_rec.h \
-    user_manager.h
+    user_manager.h \
+    dynamicedit.h \
+    dynamicline.h
 
 FORMS += \
         mainwindow.ui \
