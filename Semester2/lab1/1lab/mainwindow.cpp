@@ -69,13 +69,12 @@ void MainWindow::slot_read()
         QList <QByteArray> all = array.split('&');
         if (all[0] == "authAnswer"){
             if(all[1] == "moder"){
-                moder *M = new moder(nullptr, ClientSocket);
+                moder *M = new moder(this, ClientSocket);
                 M ->show();
-                M -> moder::selectAllAnswer(array);
-                this -> hide();
+                //this -> hide();
             }
             else if (all[1] == "manager") {
-                moder *M = new moder(nullptr, ClientSocket);
+                moder *M = new moder(this, ClientSocket);
                 M ->show();
             }
             else {
@@ -84,7 +83,8 @@ void MainWindow::slot_read()
             }
         }
         else if (all[0] == "selectAllAnswer") {
-        M -> moder::selectAllAnswer(array);
+            emit readyReadfromMainWindow(array);
+      // M -> moder::selectAllAnswer(array);
         }
   }
 

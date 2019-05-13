@@ -15,7 +15,7 @@ moder::moder(QWidget *parent, QTcpSocket *ClientSock) :
 {
     ui->setupUi(this);
     ClientSocket = ClientSock;
-    connect(ClientSocket,SIGNAL(readyRead()),this,SLOT(slot_read()));
+    connect(parent,SIGNAL(readyReadfromMainWindow(QByteArray)),this,SLOT(slot_read1(QByteArray)));
     send_to_server("selectAll&*&user");
 }
 
@@ -81,7 +81,13 @@ void moder::on_delete_button_clicked()
     D ->show();
 }
 
+void moder::slot_read1(QByteArray array){
 
+        QList <QByteArray> all = array.split('&');
+        if (all[0] == "selectAllAnswer"){
+
+        }
+}
 void moder::send_to_server(QString message)
 {
 QByteArray array;

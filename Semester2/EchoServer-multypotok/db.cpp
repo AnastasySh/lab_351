@@ -29,7 +29,7 @@ QString authorize(QByteArray login, QByteArray password){
     QSqlQuery query(db);
     query.prepare("SELECT * FROM user WHERE login = :log AND password = :pass");
     QString log = login;
-    QString pass = password; // если не будет этих строк - все не зработает
+    QString pass = password; // если не будет этих строк - все не заработает
     query.bindValue(":pass", pass);
     query.bindValue(":log", log);
     query.exec();
@@ -56,6 +56,7 @@ QByteArray selectAll(QByteArray what, QByteArray where){
     QSqlQuery query(db);
     int n;
     QByteArray all = "";
+    QList <QByteArray> nameOfColumns = what.split(', ');
     query.prepare("pragma table_info(user)");
     query.exec();
     QSqlRecord rec = query.record();
@@ -65,11 +66,12 @@ QByteArray selectAll(QByteArray what, QByteArray where){
         n++;
     }
     query.clear();
-    query.prepare("SELECT * FROM user"); // ошибка в выполнении запроса
-    QString whatt = what;
-    QString wherre = where;
+    query.prepare("SELECT "+what+" FROM "+where);
+    /*qDebug()<<what<<"\t"<<where<<"\n";
+    QString whatt = (QString)what;
+    QString wherre = (QString)where;
     query.bindValue(":what", whatt);
-    query.bindValue(":where", wherre);
+    query.bindValue(":where", wherre);*/
     query.exec();
     rec = query.record();
     qDebug() << all;
@@ -83,7 +85,7 @@ QByteArray selectAll(QByteArray what, QByteArray where){
     }
     all.prepend('&');
     all.prepend(n+'0');
-    all.prepend("selectAllAnswer");
+    all.prepend("selectAllAnswer&");
     qDebug() << QString::fromStdString(all.toStdString());
     db.close();
     return all;
@@ -93,12 +95,39 @@ QString select(QByteArray what, QByteArray where, QByteArray condition){
     QSqlDatabase db;
     openDB("Test",db);
     QSqlQuery query(db);
-    query.prepare("SELECT (:what) FROM (:where) (:condition)");
-    QString whatt = what;
+    int n;
+    QByteArray all = "";
+    query.prepare("pragma table_info(user)");
+    query.exec();
+    QSqlRecord rec = query.record();
+    while(query.next()){
+        all += query.value(rec.indexOf("name")).toString();
+        all += "&";
+        n++;
+    }
+    query.clear();
+    query.prepare("SELECT " + what+ "FROM "+where+" "+condition);
+    /*QString whatt = what;
     QString wherre = where;
     QString cond = condition;
     query.bindValue(":what", what);
     query.bindValue(":where", where);
-    query.bindValue(":where", cond);
+    query.bindValue(":where", cond);*/
     query.exec();
+    rec = query.record();
+    qDebug() << all;
+    while(query.next()){
+        all += query.value(rec.indexOf("login")).toString();
+        all += "&";
+        all += query.value(rec.indexOf("password")).toString();
+        all += "&";
+        all += query.value(rec.indexOf("status")).toString();
+        all += "&";
+    }
+    all.prepend('&');
+    all.prepend(n+'0');
+    all.prepend("selectAnswer");
+    qDebug() << QString::fromStdString(all.toStdString());
+    db.close();
+    return all;
 }
