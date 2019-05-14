@@ -1,14 +1,16 @@
 #include "new_user.h"
 #include "ui_new_user.h"
-#include "dynamicedit.h"
-#include "dynamicline.h"
+#include "qDebug"
+#include <QMessageBox>
+#include <QString>
 
-new_user::new_user(QWidget *parent, QByteArray name) :
+new_user::new_user(QWidget *parent, QTcpSocket *ClientSock) :
     QDialog(parent),
     ui(new Ui::new_user)
 {
     ui->setupUi(this);
-    emit createDyn();
+    ClientSocket = ClientSock;
+   // emit createDyn();
 }
 
 new_user::~new_user()
@@ -16,12 +18,41 @@ new_user::~new_user()
     delete ui;
 }
 
-void new_user::create_dyn()
-{
-    dynamicLine *line = new dynamicLine (this);
-    dynamicEdit *edit = new dynamicEdit (this);
-    ui->formLayout->addWidget(line);
-    ui->formLayout->addWidget(edit);
+/*
+    qDebug()<<"accepted";
+    QString log = ui->loginEdit->text(); считывание строки из поля
+    QString pass = ui->passwordEdit->text();
+    QString status = ui->statusEdit->text();
+    QString all = "newQuery&"+log+", "+pass+", "+status+"&login, password, status&";
+    QByteArray array;
+    array.append(all);
+    ClientSocket->write(array);
+};*/
 
-   //connect(edit, SIGNAL(clicked()), this, SLOT(slotGetNumber()));
-};
+
+
+
+void new_user::on_buttonBox_accepted()
+{
+    qDebug()<<"accepted";
+    QString log = ui->loginEdit->text();
+    log += '"';
+    log.prepend('"');
+    QString pass = ui->passwordEdit->text();
+    pass += '"';
+    pass.prepend('"');
+    QString status = ui->statusEdit->text();
+    if(status == "moder" || status == "user" || status == "manager" ) {
+        pass += '"';
+        pass.prepend('"');
+        QString all = "newQuery&("+log+", "+pass+", "+status+")&login, password, status&";
+        QByteArray array;
+        array.append(all);
+        ClientSocket->write(array); // вылетают лютые ошибки в этом месте
+    }
+    else {
+    QMessageBox Msg;
+    Msg.setText("Invalid status entry. repeat");
+    Msg.exec();
+    }
+}

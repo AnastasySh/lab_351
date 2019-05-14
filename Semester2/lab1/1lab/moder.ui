@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>902</width>
-    <height>523</height>
+    <width>872</width>
+    <height>508</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,10 +16,10 @@
   <widget class="QTableView" name="tableDB">
    <property name="geometry">
     <rect>
-     <x>40</x>
-     <y>40</y>
-     <width>811</width>
-     <height>361</height>
+     <x>30</x>
+     <y>30</y>
+     <width>821</width>
+     <height>371</height>
     </rect>
    </property>
   </widget>
@@ -27,7 +27,7 @@
    <property name="geometry">
     <rect>
      <x>40</x>
-     <y>410</y>
+     <y>430</y>
      <width>201</width>
      <height>21</height>
     </rect>
@@ -40,7 +40,7 @@
    <property name="geometry">
     <rect>
      <x>660</x>
-     <y>410</y>
+     <y>430</y>
      <width>191</width>
      <height>21</height>
     </rect>
@@ -53,7 +53,7 @@
    <property name="geometry">
     <rect>
      <x>310</x>
-     <y>410</y>
+     <y>430</y>
      <width>271</width>
      <height>21</height>
     </rect>
@@ -83,6 +83,58 @@
    </property>
    <property name="text">
     <string>search</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="refrash">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>410</y>
+     <width>191</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>refrash</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="new_rec">
+   <property name="geometry">
+    <rect>
+     <x>470</x>
+     <y>410</y>
+     <width>191</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>new record</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="edit_rec">
+   <property name="geometry">
+    <rect>
+     <x>670</x>
+     <y>410</y>
+     <width>191</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>edit record</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="delete_rec">
+   <property name="geometry">
+    <rect>
+     <x>240</x>
+     <y>410</y>
+     <width>191</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>delete record</string>
    </property>
   </widget>
  </widget>

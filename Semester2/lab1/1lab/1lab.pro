@@ -30,10 +30,9 @@ SOURCES += \
         mainwindow.cpp \
     moder.cpp \
     new_user.cpp \
-    delete_rec.cpp \
     user_manager.cpp \
-    dynamicedit.cpp \
-    dynamicline.cpp
+    edit_user.cpp \
+    delete_rec.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -41,8 +40,7 @@ HEADERS += \
     new_user.h \
     delete_rec.h \
     user_manager.h \
-    dynamicedit.h \
-    dynamicline.h
+    edit_user.h
 
 FORMS += \
         mainwindow.ui \
@@ -50,7 +48,8 @@ FORMS += \
     new_user.ui \
     delete.ui \
     delete_rec.ui \
-    user_manager.ui
+    user_manager.ui \
+    edit_user.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

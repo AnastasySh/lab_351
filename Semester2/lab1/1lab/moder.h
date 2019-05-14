@@ -16,14 +16,14 @@ class moder : public QWidget
     Q_OBJECT
 
 public:
-    explicit moder(QWidget *parent = nullptr, QTcpSocket *ClientSock = nullptr);
+    explicit moder(QWidget *parent = nullptr, QTcpSocket *ClientSock = nullptr, QString status = nullptr);
     ~moder();
     QSqlTableModel  *model;
     QStandardItemModel* tableDB;
     void selectAllAnswer(QList <QByteArray> all);
 
 private slots:
-    void on_new_button_clicked(QByteArray name);
+    void on_new_button_clicked();
 
     void on_edit_button_clicked();
 
@@ -36,13 +36,9 @@ private slots:
 
 private:
     Ui::moder *ui;
-      QTcpSocket* ClientSocket;
-
+    QTcpSocket* ClientSocket;
     void setupModel(const QString &tableName, const QStringList &headers);
-      void drawTable();
-      void send_to_server(QString message);
-       void createUI();
-
+    void send_to_server(QString message);
 
 };
 

@@ -136,7 +136,9 @@ QString newQuery(QByteArray what, QByteArray where, QByteArray whatExactly){
     QSqlDatabase db;
     openDB("Test",db);
     QSqlQuery query(db);
-    query.prepare("INSERT INTO "+where+"("+whatExactly+") VALUES "+what);
+    query.prepare("INSERT INTO "+where+"("+what+") VALUES "+whatExactly);
     query.exec();
+    db.close();
     return selectAll("*",where);
+
 }

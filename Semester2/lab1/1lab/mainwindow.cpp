@@ -69,16 +69,16 @@ void MainWindow::slot_read()
         QList <QByteArray> all = array.split('&');
         if (all[0] == "authAnswer"){
             if(all[1] == "moder"){
-                moder *M = new moder(this, ClientSocket);
+                moder *M = new moder(this, ClientSocket, all[1]);
                 M ->show();
                 //this -> hide();
             }
             else if (all[1] == "manager") {
-                moder *M = new moder(this, ClientSocket);
+                moder *M = new moder(this, ClientSocket, all[1]);
                 M ->show();
             }
-            else {
-                moder *M = new moder;
+            else if (all[1] == "user") {
+                moder *M = new moder (this, ClientSocket, all[1]);
                 M ->show();
             }
         }

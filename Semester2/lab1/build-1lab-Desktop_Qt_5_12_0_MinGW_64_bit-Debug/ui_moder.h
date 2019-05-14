@@ -29,30 +29,46 @@ public:
     QPushButton *edit_button;
     QLineEdit *lineEdit;
     QLabel *label;
+    QPushButton *refrash;
+    QPushButton *new_rec;
+    QPushButton *edit_rec;
+    QPushButton *delete_rec;
 
     void setupUi(QWidget *moder)
     {
         if (moder->objectName().isEmpty())
             moder->setObjectName(QString::fromUtf8("moder"));
-        moder->resize(902, 523);
+        moder->resize(872, 508);
         tableDB = new QTableView(moder);
         tableDB->setObjectName(QString::fromUtf8("tableDB"));
-        tableDB->setGeometry(QRect(40, 40, 811, 361));
+        tableDB->setGeometry(QRect(30, 30, 821, 371));
         new_button = new QPushButton(moder);
         new_button->setObjectName(QString::fromUtf8("new_button"));
-        new_button->setGeometry(QRect(40, 410, 201, 21));
+        new_button->setGeometry(QRect(40, 430, 201, 21));
         delete_button = new QPushButton(moder);
         delete_button->setObjectName(QString::fromUtf8("delete_button"));
-        delete_button->setGeometry(QRect(660, 410, 191, 21));
+        delete_button->setGeometry(QRect(660, 430, 191, 21));
         edit_button = new QPushButton(moder);
         edit_button->setObjectName(QString::fromUtf8("edit_button"));
-        edit_button->setGeometry(QRect(310, 410, 271, 21));
+        edit_button->setGeometry(QRect(310, 430, 271, 21));
         lineEdit = new QLineEdit(moder);
         lineEdit->setObjectName(QString::fromUtf8("lineEdit"));
         lineEdit->setGeometry(QRect(160, 460, 691, 21));
         label = new QLabel(moder);
         label->setObjectName(QString::fromUtf8("label"));
         label->setGeometry(QRect(110, 460, 47, 13));
+        refrash = new QPushButton(moder);
+        refrash->setObjectName(QString::fromUtf8("refrash"));
+        refrash->setGeometry(QRect(30, 410, 191, 21));
+        new_rec = new QPushButton(moder);
+        new_rec->setObjectName(QString::fromUtf8("new_rec"));
+        new_rec->setGeometry(QRect(470, 410, 191, 21));
+        edit_rec = new QPushButton(moder);
+        edit_rec->setObjectName(QString::fromUtf8("edit_rec"));
+        edit_rec->setGeometry(QRect(670, 410, 191, 21));
+        delete_rec = new QPushButton(moder);
+        delete_rec->setObjectName(QString::fromUtf8("delete_rec"));
+        delete_rec->setGeometry(QRect(240, 410, 191, 21));
 
         retranslateUi(moder);
 
@@ -66,6 +82,10 @@ public:
         delete_button->setText(QApplication::translate("moder", "delete user", nullptr));
         edit_button->setText(QApplication::translate("moder", "edit user", nullptr));
         label->setText(QApplication::translate("moder", "search", nullptr));
+        refrash->setText(QApplication::translate("moder", "refrash", nullptr));
+        new_rec->setText(QApplication::translate("moder", "new record", nullptr));
+        edit_rec->setText(QApplication::translate("moder", "edit record", nullptr));
+        delete_rec->setText(QApplication::translate("moder", "delete record", nullptr));
     } // retranslateUi
 
 };

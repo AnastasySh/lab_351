@@ -1,21 +1,20 @@
-#include "delete_rec.h"
-#include "ui_delete_rec.h"
+#include "edit_user.h"
+#include "ui_edit_user.h"
 
-delete_rec::delete_rec(QWidget *parent, QTcpSocket *ClientSock) :
+edit_user::edit_user(QWidget *parent, QTcpSocket *ClientSock) :
     QDialog(parent),
-    ui(new Ui::delete_rec)
-
+    ui(new Ui::edit_user)
 {
     ui->setupUi(this);
     ClientSocket = ClientSock;
 }
 
-delete_rec::~delete_rec()
+edit_user::~edit_user()
 {
     delete ui;
 }
 
-void delete_rec::on_buttonBox_accepted()
+void edit_user::on_buttonBox_accepted()
 {
     QString message = "yeeeees";
     QByteArray array;

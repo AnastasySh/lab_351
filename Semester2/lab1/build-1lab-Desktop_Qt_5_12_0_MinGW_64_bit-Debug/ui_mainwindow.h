@@ -37,24 +37,24 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-        MainWindow->resize(400, 187);
+        MainWindow->resize(880, 534);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         label = new QLabel(centralWidget);
         label->setObjectName(QString::fromUtf8("label"));
-        label->setGeometry(QRect(90, 60, 47, 13));
+        label->setGeometry(QRect(350, 230, 47, 13));
         label_2 = new QLabel(centralWidget);
         label_2->setObjectName(QString::fromUtf8("label_2"));
-        label_2->setGeometry(QRect(90, 90, 47, 13));
+        label_2->setGeometry(QRect(350, 260, 47, 13));
         pushButton = new QPushButton(centralWidget);
         pushButton->setObjectName(QString::fromUtf8("pushButton"));
-        pushButton->setGeometry(QRect(190, 120, 75, 23));
+        pushButton->setGeometry(QRect(450, 290, 75, 23));
         lineLog = new QLineEdit(centralWidget);
         lineLog->setObjectName(QString::fromUtf8("lineLog"));
-        lineLog->setGeometry(QRect(160, 60, 113, 20));
+        lineLog->setGeometry(QRect(420, 230, 113, 20));
         linePass = new QLineEdit(centralWidget);
         linePass->setObjectName(QString::fromUtf8("linePass"));
-        linePass->setGeometry(QRect(160, 90, 113, 20));
+        linePass->setGeometry(QRect(420, 260, 113, 20));
         MainWindow->setCentralWidget(centralWidget);
         mainToolBar = new QToolBar(MainWindow);
         mainToolBar->setObjectName(QString::fromUtf8("mainToolBar"));

@@ -8,66 +8,55 @@
 #include <QTcpServer>
 #include <QTcpSocket>
 #include <QStandardItemModel>
+#include "edit_user.h"
 
-moder::moder(QWidget *parent, QTcpSocket *ClientSock) :
+moder::moder(QWidget *parent, QTcpSocket *ClientSock, QString status) :
     QWidget(parent),
     ui(new Ui::moder)
 {
     ui->setupUi(this);
-    ClientSocket = ClientSock;
-    connect(parent,SIGNAL(readyReadfromMainWindow(QByteArray)),this,SLOT(slot_read1(QByteArray)));
-    send_to_server("selectAll&*&user");
+    if(status == "moder")
+    {
+
+    }
+    else if (status == "manager") {
+        ui ->new_button -> hide();
+        ui ->edit_button -> hide();
+        ui ->delete_button -> hide();
+    }
+    else if (status == "user") {
+        ui ->new_button -> hide();
+        ui ->edit_button -> hide();
+        ui ->delete_button -> hide();
+        ui ->new_rec -> hide();
+        ui ->delete_rec -> hide();
+        ui ->edit_rec ->hide();
+    }
+     ClientSocket = ClientSock;
+     connect(parent,SIGNAL(readyReadfromMainWindow(QByteArray)),this,SLOT(slot_read1(QByteArray)));
+     if (status == "user" || status == "manager"){
+        send_to_server("selectAll&*&party");
+     }
+     else {
+        send_to_server("selectAll&*&user");
+     }
 }
 
 moder::~moder()
 {
     delete ui;
 }
-void moder::drawTable(){
-tableDB = new QStandardItemModel(1, 6, this);
-QStandardItem *item;
-ui->tableDB->setModel(tableDB);
-tableDB->setHeaderData(0, Qt::Horizontal, "login");
-tableDB->setHeaderData(1, Qt::Horizontal, "password");
-tableDB->setHeaderData(2, Qt::Horizontal, "status");
 
-/*
-query.exec("SELECT * FROM database");
-QSqlRecord rec = query.record();
-const int idIndex = rec.indexOf( "id");
-const int fioIndex = rec.indexOf( "fio");
-const int typeIndex = rec.indexOf( "type");
-const int priceIndex = rec.indexOf("price");
-const int countIndex = rec.indexOf("count");
-const int dateIndex = rec.indexOf( "date");
 
-while(query.next()){
-item = new QStandardItem(query.value(idIndex).toString());
-tableDB->setItem(i, 0, item);
-item = new QStandardItem(query.value(fioIndex).toString());
-tableDB->setItem(i, 1, item);
-item = new QStandardItem(query.value(typeIndex).toString());
-tableDB->setItem(i, 2, item);
-item = new QStandardItem(query.value(priceIndex).toString());
-tableDB->setItem(i, 3, item);
-item = new QStandardItem(query.value(countIndex).toString());
-tableDB->setItem(i, 4, item);
-item = new QStandardItem(query.value(dateIndex).toString());
-tableDB->setItem(i, 5, item);
-i++;
-
-}*/
-}
-
-void moder::on_new_button_clicked( QByteArray name)
+void moder::on_new_button_clicked()
 {
-    new_user *N = new new_user (nullptr, name);
+    new_user *N = new new_user (nullptr,ClientSocket);
     N ->show();
 }
 
 void moder::on_edit_button_clicked()
 {
-    new_user *N = new new_user;
+    edit_user *N = new edit_user(nullptr, ClientSocket);
     N ->show();
 }
 
@@ -98,6 +87,7 @@ void moder::selectAllAnswer(QList <QByteArray> all){
 
 void moder::on_delete_button_clicked()
 {
+    //QItemSelectionModel *QAbstractItemView::selectionModel();
     delete_rec *D = new delete_rec;
     D ->show();
 }

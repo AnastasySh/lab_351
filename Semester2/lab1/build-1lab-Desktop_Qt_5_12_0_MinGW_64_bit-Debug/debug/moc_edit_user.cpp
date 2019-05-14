@@ -1,16 +1,16 @@
 /****************************************************************************
-** Meta object code from reading C++ file 'delete_rec.h'
+** Meta object code from reading C++ file 'edit_user.h'
 **
 ** Created by: The Qt Meta Object Compiler version 67 (Qt 5.12.0)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
 
-#include "../../1lab/delete_rec.h"
+#include "../../1lab/edit_user.h"
 #include <QtCore/qbytearray.h>
 #include <QtCore/qmetatype.h>
 #if !defined(Q_MOC_OUTPUT_REVISION)
-#error "The header file 'delete_rec.h' doesn't include <QObject>."
+#error "The header file 'edit_user.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
 #error "This file was generated using the moc from 5.12.0. It"
 #error "cannot be used with the include files from this version of Qt."
@@ -20,27 +20,27 @@
 QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
-struct qt_meta_stringdata_delete_rec_t {
+struct qt_meta_stringdata_edit_user_t {
     QByteArrayData data[3];
-    char stringdata0[34];
+    char stringdata0[33];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
-    qptrdiff(offsetof(qt_meta_stringdata_delete_rec_t, stringdata0) + ofs \
+    qptrdiff(offsetof(qt_meta_stringdata_edit_user_t, stringdata0) + ofs \
         - idx * sizeof(QByteArrayData)) \
     )
-static const qt_meta_stringdata_delete_rec_t qt_meta_stringdata_delete_rec = {
+static const qt_meta_stringdata_edit_user_t qt_meta_stringdata_edit_user = {
     {
-QT_MOC_LITERAL(0, 0, 10), // "delete_rec"
-QT_MOC_LITERAL(1, 11, 21), // "on_buttonBox_accepted"
-QT_MOC_LITERAL(2, 33, 0) // ""
+QT_MOC_LITERAL(0, 0, 9), // "edit_user"
+QT_MOC_LITERAL(1, 10, 21), // "on_buttonBox_accepted"
+QT_MOC_LITERAL(2, 32, 0) // ""
 
     },
-    "delete_rec\0on_buttonBox_accepted\0"
+    "edit_user\0on_buttonBox_accepted\0"
 };
 #undef QT_MOC_LITERAL
 
-static const uint qt_meta_data_delete_rec[] = {
+static const uint qt_meta_data_edit_user[] = {
 
  // content:
        8,       // revision
@@ -62,10 +62,10 @@ static const uint qt_meta_data_delete_rec[] = {
        0        // eod
 };
 
-void delete_rec::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
+void edit_user::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
 {
     if (_c == QMetaObject::InvokeMetaMethod) {
-        delete_rec *_t = static_cast<delete_rec *>(_o);
+        edit_user *_t = static_cast<edit_user *>(_o);
         Q_UNUSED(_t)
         switch (_id) {
         case 0: _t->on_buttonBox_accepted(); break;
@@ -75,30 +75,30 @@ void delete_rec::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
     Q_UNUSED(_a);
 }
 
-QT_INIT_METAOBJECT const QMetaObject delete_rec::staticMetaObject = { {
+QT_INIT_METAOBJECT const QMetaObject edit_user::staticMetaObject = { {
     &QDialog::staticMetaObject,
-    qt_meta_stringdata_delete_rec.data,
-    qt_meta_data_delete_rec,
+    qt_meta_stringdata_edit_user.data,
+    qt_meta_data_edit_user,
     qt_static_metacall,
     nullptr,
     nullptr
 } };
 
 
-const QMetaObject *delete_rec::metaObject() const
+const QMetaObject *edit_user::metaObject() const
 {
     return QObject::d_ptr->metaObject ? QObject::d_ptr->dynamicMetaObject() : &staticMetaObject;
 }
 
-void *delete_rec::qt_metacast(const char *_clname)
+void *edit_user::qt_metacast(const char *_clname)
 {
     if (!_clname) return nullptr;
-    if (!strcmp(_clname, qt_meta_stringdata_delete_rec.stringdata0))
+    if (!strcmp(_clname, qt_meta_stringdata_edit_user.stringdata0))
         return static_cast<void*>(this);
     return QDialog::qt_metacast(_clname);
 }
 
-int delete_rec::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+int edit_user::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
     _id = QDialog::qt_metacall(_c, _id, _a);
     if (_id < 0)
