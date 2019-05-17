@@ -5,6 +5,7 @@
 #include <QTcpServer>
 #include <QTcpSocket>
 #include <QMap>
+#include <QSqlDatabase>
 
 class MyTcpServer : public QObject
 {
@@ -25,6 +26,7 @@ private:
     QTcpServer *tcpServer;
     int server_status;
     QMap<int,QTcpSocket *> SClients;
+    QSqlDatabase db;
 
 };
 

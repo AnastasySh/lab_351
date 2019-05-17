@@ -42,17 +42,17 @@ void MyTcpServer::slotServerRead()
             QList <QByteArray> all = array.split('&');
             qDebug() << "name func is " +  all[0]; // это он вывел
                 if (all[0] == "auth") {
-                    send_to_client(authorize(all[1], all[2]), clientSocket);
+                    send_to_client(authorize(all[1], all[2], db), clientSocket);
                 }
                 else if (all[0] == "selectAll") {
-                    send_to_client(selectAll(all[1], all[2]), clientSocket);
+                    send_to_client(selectAll(all[1], all[2], db), clientSocket);
                 }
                 else if (all[0] == "select") {
-                    send_to_client(select(all[1], all[2], all [3]), clientSocket);
+                    send_to_client(select(all[1], all[2], all [3], db), clientSocket);
                 }
                 else if (all[0] == "newQuery") {
 
-                    send_to_client(newQuery(all[1], all[2], all [3]), clientSocket);
+                    send_to_client(newQuery(all[1], all[2], all [3],db), clientSocket);
 
                 }
         }

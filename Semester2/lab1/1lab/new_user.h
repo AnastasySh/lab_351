@@ -14,7 +14,7 @@ class new_user : public QDialog
     Q_OBJECT
 
 public:
-    explicit new_user(QWidget *parent = nullptr, QTcpSocket *ClientSock = nullptr);
+    explicit new_user(QWidget *parent = nullptr, QTcpSocket *ClientSock = nullptr, QString name = nullptr);
     ~new_user();
 signals:
     //void createDyn ();

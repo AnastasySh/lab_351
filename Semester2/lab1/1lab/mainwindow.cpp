@@ -13,6 +13,7 @@
 #include <QTextStream>
 #include <QByteArray>
 #include <QMessageBox>
+#include "new_user.h"
 
 
 
@@ -35,23 +36,29 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_clicked()
 {
-   ClientSocket = new QTcpSocket (this);
-   ClientSocket -> connectToHost("127.0.0.1", 33333); // сокет подключается к порту.
-   connect(ClientSocket,SIGNAL( connected() ),this,SLOT( slot_connected() ) ); // что-то не так с этими двумя строками
-   connect(ClientSocket,SIGNAL(readyRead()),this,SLOT(slot_read()));
-   QString log = ui->lineLog->text(); /*считывание строки из поля*/
-   QString pass = ui->linePass->text();
-   QByteArray passH = pass.toUtf8();// хэшируем пароль алгоритмом sha256. передаваться он будет только в таком виде.
+    ClientSocket = new QTcpSocket (this);
+    ClientSocket -> connectToHost("127.0.0.1", 33333);
+    connect(ClientSocket,SIGNAL( connected() ),this,SLOT( slot_connected() ) );
+    connect(ClientSocket,SIGNAL(readyRead()),this,SLOT(slot_read()));
+    QString log = ui->lineLog->text();
+    QString pass = ui->linePass->text();
+    QByteArray passH = pass.toUtf8();
     qDebug() << passH;
     qDebug() <<  QCryptographicHash::hash(passH, QCryptographicHash::Sha256).toHex();
-  //passH = QCryptographicHash::hash(passH, QCryptographicHash::Sha256).toHex(); // почему то без toHex хэш не хэш
-  qDebug() << passH;
-  // в идеале здесь сразу должна быть функция, которая клеит qarraу добавляя auth, и отправляет серверу.
+    passH = QCryptographicHash::hash(passH, QCryptographicHash::Sha256).toHex(); // почему то без toHex хэш не хэш
+    while (passH.indexOf('\\') != -1){
+        passH.remove(passH.indexOf('\\'), 1);
+    }
+    while (passH.indexOf('"') != -1){
+        passH.remove(passH.indexOf('"'), 1);
+    }
+    while (passH.indexOf(',') != -1){
+        passH.remove(passH.indexOf('"'), 1);
+    }
+   qDebug() << passH;
    QString all ="auth&" + log +"&" + passH + "&";
    qDebug() <<all;
    send_to_server(all);
-
-// далее нужно переделать все в QByteArray
 }
 
 void MainWindow::slot_connected()
@@ -81,6 +88,13 @@ void MainWindow::slot_read()
                 moder *M = new moder (this, ClientSocket, all[1]);
                 M ->show();
             }
+            else if ( all [1] == "errorAuth") {
+
+                QMessageBox Msg;
+                Msg.setText("error Authorization. Please, try again");
+                Msg.exec();
+
+            }
         }
         else if (all[0] == "selectAllAnswer") {
             emit readyReadfromMainWindow(array);
@@ -102,5 +116,12 @@ void MainWindow::disconnected()
 
 };
 
+void MainWindow::on_reg_clicked()
+{
+    ClientSocket = new QTcpSocket (this);
+    ClientSocket -> connectToHost("127.0.0.1", 33333);
+    new_user *W = new new_user(nullptr, ClientSocket, "reg");
+    W -> show();
 
 
+}

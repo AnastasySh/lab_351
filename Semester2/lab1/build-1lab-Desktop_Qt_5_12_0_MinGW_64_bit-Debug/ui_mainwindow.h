@@ -30,6 +30,7 @@ public:
     QPushButton *pushButton;
     QLineEdit *lineLog;
     QLineEdit *linePass;
+    QPushButton *reg;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
 
@@ -48,13 +49,16 @@ public:
         label_2->setGeometry(QRect(350, 260, 47, 13));
         pushButton = new QPushButton(centralWidget);
         pushButton->setObjectName(QString::fromUtf8("pushButton"));
-        pushButton->setGeometry(QRect(450, 290, 75, 23));
+        pushButton->setGeometry(QRect(460, 290, 75, 23));
         lineLog = new QLineEdit(centralWidget);
         lineLog->setObjectName(QString::fromUtf8("lineLog"));
         lineLog->setGeometry(QRect(420, 230, 113, 20));
         linePass = new QLineEdit(centralWidget);
         linePass->setObjectName(QString::fromUtf8("linePass"));
         linePass->setGeometry(QRect(420, 260, 113, 20));
+        reg = new QPushButton(centralWidget);
+        reg->setObjectName(QString::fromUtf8("reg"));
+        reg->setGeometry(QRect(679, 10, 191, 21));
         MainWindow->setCentralWidget(centralWidget);
         mainToolBar = new QToolBar(MainWindow);
         mainToolBar->setObjectName(QString::fromUtf8("mainToolBar"));
@@ -74,6 +78,7 @@ public:
         label->setText(QApplication::translate("MainWindow", "login", nullptr));
         label_2->setText(QApplication::translate("MainWindow", "password", nullptr));
         pushButton->setText(QApplication::translate("MainWindow", "submit", nullptr));
+        reg->setText(QApplication::translate("MainWindow", "registration", nullptr));
     } // retranslateUi
 
 };

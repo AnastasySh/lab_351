@@ -23,6 +23,8 @@ private slots: // cлоты которые есть в окне
     void send_to_server (QString message);
     void disconnected();
 
+    void on_reg_clicked();
+
 signals:
     void readyReadfromMainWindow(QByteArray );
 
