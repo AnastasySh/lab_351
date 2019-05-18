@@ -10,21 +10,28 @@
 #include <QStandardItemModel>
 #include "edit_user.h"
 
-moder::moder(QWidget *parent, QTcpSocket *ClientSock, QString status) :
+moder::moder(QWidget *parent, QTcpSocket *ClientSock, QString stat) :
     QWidget(parent),
-    ui(new Ui::moder)
+    ui(new Ui::moder) //сделано, открытие окон под разных пользователей
 {
     ui->setupUi(this);
-    if(status == "moder")
+    if(stat == "moder")
     {
+        status = stat;
+        ui ->new_rec -> hide();
+        ui ->delete_rec -> hide();
+        ui ->edit_rec ->hide();
+
 
     }
-    else if (status == "manager") {
+    else if (stat == "manager") {
+        status = stat;
         ui ->new_button -> hide();
         ui ->edit_button -> hide();
         ui ->delete_button -> hide();
     }
-    else if (status == "user") {
+    else if (stat == "user") {
+        status = stat;
         ui ->new_button -> hide();
         ui ->edit_button -> hide();
         ui ->delete_button -> hide();
@@ -60,9 +67,14 @@ void moder::on_edit_button_clicked()
     N ->show();
 }
 
-void moder::selectAllAnswer(QList <QByteArray> all){
+void moder::selectAllAnswer(QList <QByteArray> all){ // сделано. построение таблицы
     int n = all[1].toInt();
-    tableDB = new QStandardItemModel(1, n, this);
+    tableDB = new QStandardItemModel(0, n, this);
+    // Разрешаем выделение строк
+    ui->tableDB->setSelectionBehavior(QAbstractItemView::SelectRows);
+    // Устанавливаем режим выделения лишь одно строки в таблице
+    ui->tableDB->setSelectionMode(QAbstractItemView::SingleSelection);
+
     QStandardItem *item;
     ui->tableDB->setModel(tableDB);
     for (int i = 0; i < n; i++){
@@ -83,12 +95,13 @@ void moder::selectAllAnswer(QList <QByteArray> all){
         tableDB->setItem(k, m, item);
         m++;
     }
-}
+ }
 
 void moder::on_delete_button_clicked()
 {
-    //QItemSelectionModel *QAbstractItemView::selectionModel();
-    delete_rec *D = new delete_rec;
+    QModelIndex index = ui->tableDB->selectionModel()->currentIndex();
+    emit get_index(index);
+    delete_rec *D = new delete_rec();
     D ->show();
 }
 
@@ -102,9 +115,23 @@ void moder::slot_read1(QByteArray array){
 
         }
 }
-void moder::send_to_server(QString message)
+void moder::send_to_server(QString message) //сделано. отправка серверу
 {
 QByteArray array;
 array.append(message);
-ClientSocket -> write(array); // то что мы отправляем. в виде Qstring
+ClientSocket -> write(array);
+}
+
+void moder::on_refrash_clicked() //сделано. обновление страницы
+{
+    if(status == "moder"){
+        send_to_server("selectAll&*&user");
+        qDebug() << "refresh moder";
+    }
+    else {
+        send_to_server("selectAll&*&party");
+        qDebug() << "refresh user";
+
+    }
+
 }

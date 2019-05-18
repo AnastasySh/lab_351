@@ -27,7 +27,7 @@ new_user::~new_user()
     delete ui;
 }
 
-void new_user::on_buttonBox_accepted()
+void new_user::on_buttonBox_accepted() //cделано. добавление новых записей в таблицу
 {
     qDebug()<<"accepted";
     QString log = ui->loginEdit->text();

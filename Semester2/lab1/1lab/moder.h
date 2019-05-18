@@ -16,7 +16,7 @@ class moder : public QWidget
     Q_OBJECT
 
 public:
-    explicit moder(QWidget *parent = nullptr, QTcpSocket *ClientSock = nullptr, QString status = nullptr);
+    explicit moder(QWidget *parent = nullptr, QTcpSocket *ClientSock = nullptr, QString stat = nullptr);
     ~moder();
     QSqlTableModel  *model;
     QStandardItemModel* tableDB;
@@ -30,15 +30,16 @@ private slots:
     void on_delete_button_clicked();
 
     void slot_read1(QByteArray arr);
-
-
-
+signals:
+    void get_index(QModelIndex index);
+    void on_refrash_clicked();
 
 private:
     Ui::moder *ui;
     QTcpSocket* ClientSocket;
-    void setupModel(const QString &tableName, const QStringList &headers);
+    //void setupModel(const QString &tableName, const QStringList &headers);
     void send_to_server(QString message);
+    QString status;
 
 };
 
