@@ -34,6 +34,7 @@ QString authorize(QString login, QString password, QSqlDatabase& db){
     query.bindValue(":pass", pass);
     query.bindValue(":log", log);
     query.exec();
+     qDebug() << "QUERY IS  " + query.lastQuery();
     QString status;
     query.next();
     QSqlRecord rec = query.record();
@@ -106,7 +107,8 @@ QString select(QByteArray what, QByteArray where, QByteArray condition, QSqlData
         n++;
     }
     query.clear();
-    query.prepare("SELECT " + what+ "FROM "+where+" "+condition);
+    query.prepare("SELECT " +what+ "FROM "+where+" WHERE login = \""+QString::fromStdString(condition.toStdString())+"\" OR password = \""+QString::fromStdString(condition.toStdString())+
+                  "\" OR status = \""+QString::fromStdString(condition.toStdString())+"\"");
     /*QString whatt = what;
     QString wherre = where;
     QString cond = condition;
@@ -126,7 +128,7 @@ QString select(QByteArray what, QByteArray where, QByteArray condition, QSqlData
     }
     all.prepend('&');
     all.prepend(n+'0');
-    all.prepend("selectAnswer");
+    all.prepend("selectAnswer&");
     qDebug() << QString::fromStdString(all.toStdString());
     db.close();
     return all;
@@ -138,11 +140,45 @@ QString newQuery(QByteArray what, QByteArray where, QByteArray whatExactly,QSqlD
     QList <QByteArray> all = whatExactly.split(',');
     qDebug() << "INSERT INTO "+where+" "+what+" VALUES "+whatExactly;
     query.prepare("INSERT INTO "+where+" "+what+" VALUES (:one, :two, :three)");
-    query.bindValue(":one",all[0]);
-    query.bindValue(":two",all[1]);
-    query.bindValue(":three",all[2]);
+    query.bindValue(":one",QString::fromStdString(all[0].toStdString()));
+    query.bindValue(":two",QString::fromStdString(all[1].toStdString()));
+    query.bindValue(":three",QString::fromStdString(all[2].toStdString()));
     query.exec();
     db.close();
     return selectAll("*",where, db);
 
+}
+QString update(QByteArray where, QByteArray what, QSqlDatabase& db){
+   openDB("Test",db);
+   QSqlQuery query(db);
+    QList <QByteArray> all = what.split(',');
+     query.prepare("UPDATE "+where+" SET login = \""+QString::fromStdString(all[3].toStdString())+"\", password = \""+QString::fromStdString(all[4].toStdString())+"\","
+                   " status = \""+QString::fromStdString(all[5].toStdString())+"\" WHERE login = \""+QString::fromStdString(all[0].toStdString())+"\""
+                                   "  AND password = \""+QString::fromStdString(all[1].toStdString())+"\" AND status = \""+QString::fromStdString(all[2].toStdString())+"\"");
+     /*query.bindValue(":log",all[0]);
+     query.bindValue(":pass",all[1]);
+     query.bindValue(":status",all[2]);
+     query.bindValue(":lastlog",all[3]);
+     query.bindValue(":lastPass",all[4]);
+     query.bindValue(":lastStat",all[5]);
+     qDebug() << "QUERY IS  " + query.lastQuery();*/
+     query.exec();
+     qDebug() << query.lastQuery();
+     db.close();
+      return selectAll("*",where, db);
+}
+QString deleteRec (QByteArray where, QByteArray what, QSqlDatabase& db){
+    openDB("Test",db);
+    QSqlQuery query(db);
+     QList <QByteArray> all = what.split(','); // вся проблема опять в кавычках
+     query.prepare("DELETE FROM "+where+" WHERE login = \""+QString::fromStdString(all[0].toStdString())+"\" AND password = \""
+             +QString::fromStdString(all[1].toStdString())+"\" AND status = \""+QString::fromStdString(all[2].toStdString())+"\"");
+     qDebug() << "DELETE FROM "+where+" WHERE login = \""+QString::fromStdString(all[0].toStdString())+"\" AND password = \""
+             +QString::fromStdString(all[1].toStdString())+"\" AND status = \""+QString::fromStdString(all[2].toStdString())+"\"";
+    /*query.bindValue(":lastLog",all[0]);
+     query.bindValue(":lastPass",all[1]);
+     query.bindValue(":lastStat",all[2]);*/
+     query.exec();
+     db.close();
+     return selectAll("*",where, db);
 }

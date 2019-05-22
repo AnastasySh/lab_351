@@ -9,6 +9,7 @@
 #include <QTcpSocket>
 #include <QStandardItemModel>
 #include "edit_user.h"
+#include <QMessageBox>
 
 moder::moder(QWidget *parent, QTcpSocket *ClientSock, QString stat) :
     QWidget(parent),
@@ -18,6 +19,8 @@ moder::moder(QWidget *parent, QTcpSocket *ClientSock, QString stat) :
     if(stat == "moder")
     {
         status = stat;
+        ui->frame ->hide();
+        ui->frame_del ->hide();
         ui ->new_rec -> hide();
         ui ->delete_rec -> hide();
         ui ->edit_rec ->hide();
@@ -26,12 +29,16 @@ moder::moder(QWidget *parent, QTcpSocket *ClientSock, QString stat) :
     }
     else if (stat == "manager") {
         status = stat;
+        ui->frame ->hide();
+        ui->frame_del ->hide();
         ui ->new_button -> hide();
         ui ->edit_button -> hide();
         ui ->delete_button -> hide();
     }
     else if (stat == "user") {
         status = stat;
+        ui->frame ->hide();
+        ui->frame_del ->hide();
         ui ->new_button -> hide();
         ui ->edit_button -> hide();
         ui ->delete_button -> hide();
@@ -63,10 +70,20 @@ void moder::on_new_button_clicked()
 
 void moder::on_edit_button_clicked()
 {
-    edit_user *N = new edit_user(nullptr, ClientSocket);
-    N ->show();
-}
+    ui ->frame -> show();
+    QModelIndex index = ui->tableDB->selectionModel()->currentIndex();
+    int row = index.row();
+    /*index = ui->tableDB->model() ->index(row, 0);
+    QVariant query= ui->tableDB->model()->data(index);
+    index = ui->tableDB->model() ->index(row, 1);
+    query= ui->tableDB->model()->data(index);
+    index = ui->tableDB->model() ->index(row, 2);
+    query= ui->tableDB->model()->data(index);*/
+    ui->log_edit->setText(ui->tableDB->model()->data(ui->tableDB->model() ->index(row, 0)).toString());
+    ui->pass_edit->setText(ui->tableDB->model()->data(ui->tableDB->model() ->index(row, 1)).toString());
+    ui->status_edit->setText(ui->tableDB->model()->data(ui->tableDB->model() ->index(row, 2)).toString());
 
+}
 void moder::selectAllAnswer(QList <QByteArray> all){ // сделано. построение таблицы
     int n = all[1].toInt();
     tableDB = new QStandardItemModel(0, n, this);
@@ -99,21 +116,21 @@ void moder::selectAllAnswer(QList <QByteArray> all){ // сделано. пост
 
 void moder::on_delete_button_clicked()
 {
-    QModelIndex index = ui->tableDB->selectionModel()->currentIndex();
-    emit get_index(index);
-    delete_rec *D = new delete_rec();
-    D ->show();
+   ui->frame_del ->show();
+
+
 }
 
 void moder::slot_read1(QByteArray array){
 
         QList <QByteArray> all = array.split('&');
-        if (all[0] == "selectAllAnswer" || all[0] == "selectAnswer"){
+        if (all[0] == "selectAllAnswer"){
           selectAllAnswer(all);
         }
-        else if (all[0] == "DeleteAnswer") {
-
+        else if (all[0] == "selectAnswer"){
+           selectAllAnswer(all);
         }
+
 }
 void moder::send_to_server(QString message) //сделано. отправка серверу
 {
@@ -133,5 +150,59 @@ void moder::on_refrash_clicked() //сделано. обновление стра
         qDebug() << "refresh user";
 
     }
+
+}
+
+void moder::on_ok_edit_clicked()
+{
+    QString log = ui->log_edit->text();
+    QString pass = ui->pass_edit->text();
+    QString status = ui->status_edit->text();
+    QModelIndex index = ui->tableDB->selectionModel()->currentIndex();
+    int row = index.row();
+    QString lastLog = ui->tableDB->model()->data(ui->tableDB->model() ->index(row, 0)).toString();
+    QString lastPass = ui->tableDB->model()->data(ui->tableDB->model() ->index(row, 1)).toString();
+    QString lastStatus = ui->tableDB->model()->data(ui->tableDB->model() ->index(row, 2)).toString();
+    send_to_server("update&user&"+lastLog+","+lastPass+","+lastStatus+","+log+","+pass+","+status);
+    QMessageBox* pmbx =
+                        new QMessageBox();
+    pmbx->setText("ou");
+    pmbx->exec();
+    delete pmbx;
+    ui->frame->hide();
+
+}
+
+void moder::on_del_ok_clicked()
+{
+    QModelIndex index = ui->tableDB->selectionModel()->currentIndex();
+    int row = index.row();
+    QString lastLog = ui->tableDB->model()->data(ui->tableDB->model() ->index(row, 0)).toString();
+    QString lastPass = ui->tableDB->model()->data(ui->tableDB->model() ->index(row, 1)).toString();
+    QString lastStatus = ui->tableDB->model()->data(ui->tableDB->model() ->index(row, 2)).toString();
+    send_to_server("deleteRec&user&"+lastLog+","+lastPass+","+lastStatus);
+
+    QMessageBox* pmbx =
+                        new QMessageBox();
+    pmbx->setText("AAAAAAAAAAAAA");
+    pmbx->exec();
+    delete pmbx;
+    ui->frame_del->hide();
+
+}
+
+void moder::on_del_no_clicked()
+{
+    ui->frame_del->hide();
+}
+
+
+
+void moder::on_edit_search_editingFinished()
+{
+
+
+         QString condition = ui->edit_search->text();
+         send_to_server("select&*&user&"+condition);
 
 }

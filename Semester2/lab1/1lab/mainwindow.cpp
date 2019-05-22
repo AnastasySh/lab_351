@@ -95,9 +95,13 @@ void MainWindow::slot_read()
 
             }
         }
-        else if (all[0] == "selectAllAnswer") {
+        else if (all[0] == "selectAllAnswer" ) {
             emit readyReadfromMainWindow(array);
-      // M -> moder::selectAllAnswer(array);
+
+        }
+        else if (all[0] == "selectAnswer" ) {
+            emit readyReadfromMainWindow(array);
+
         }
   }
 

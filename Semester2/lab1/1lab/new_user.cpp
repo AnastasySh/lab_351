@@ -12,7 +12,7 @@ new_user::new_user(QWidget *parent, QTcpSocket *ClientSock, QString name) :
 {
     if (name == "registration"){
         ui->setupUi(this);
-        ui ->statusEdit -> hide();
+        //ui ->statusEdit -> hide();
         ui ->statusLabel -> hide();
         ClientSocket = ClientSock;
     }
@@ -62,7 +62,8 @@ void new_user::on_buttonBox_accepted() //cделано. добавление н�
         while (passH.indexOf(',') != -1){
             passH.remove(passH.indexOf('"'), 1);
         }
-        QString all = "newQuery&(login, password, status)&user&"+log+","+passH+","+status;
+        pass = passH;
+        QString all = "newQuery&(login, password, status)&user&"+log+","+pass+","+status;
         QByteArray array;
         array.append(all);
         ClientSocket->write(array); // вылетают лютые ошибки в этом месте

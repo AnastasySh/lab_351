@@ -30,8 +30,14 @@ private slots:
     void on_delete_button_clicked();
 
     void slot_read1(QByteArray arr);
-signals:
-    void get_index(QModelIndex index);
+    void on_ok_edit_clicked();
+
+    void on_del_ok_clicked();
+
+    void on_del_no_clicked();
+
+    void on_edit_search_editingFinished();
+
     void on_refrash_clicked();
 
 private:

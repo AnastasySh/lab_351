@@ -55,6 +55,15 @@ void MyTcpServer::slotServerRead()
                     send_to_client(newQuery(all[1], all[2], all [3],db), clientSocket);
 
                 }
+                else if (all[0] == "update") {
+
+                    send_to_client(update(all[1], all[2],db), clientSocket);
+
+                }
+                else if (all[0]=="deleteRec") {
+
+                     send_to_client(deleteRec(all[1], all[2],db), clientSocket);
+                }
         }
 }
 
